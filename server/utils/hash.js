@@ -31,6 +31,8 @@ async function generate_password(userPassword) {
 
 async function compare_password(userPassword, hashPassword) {
 
+
+    // console.log('compare --> ', userPassword, hashPassword)
     const validPassword = await bcryptjs.compare(userPassword, hashPassword)
     return validPassword ? true : false
 }

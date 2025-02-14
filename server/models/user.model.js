@@ -6,7 +6,7 @@ const userSchema = new Schema({
     email: { type: String, unique: true },
     password: String,
     
-    role: { type: String, enum: ['admin', 'teacher'], required: true },
+    role: { type: String, enum: ['Admin', 'Teacher'], required: true },
     department: { type: String, enum: ['Computer', 'Mechanical', 'Electrical', 'Civil'], required: true },
   
     freeSlots: [
