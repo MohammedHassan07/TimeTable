@@ -10,11 +10,20 @@ const userSchema = new Schema({
     department: { type: String, enum: ['Computer', 'Mechanical', 'Electrical', 'Civil'], required: true },
   
     freeSlots: [
-        {
-          day: { type: String, enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], required: true },
-          slotNumber: { type: Number } // 1 to 6, representing free lecture slots
+      {
+        day: { 
+          type: String, 
+          enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], 
+          required: true 
+        },
+        slotNumber: { 
+          type: Number, 
+          required: true, 
+          min: 1, 
+          max: 6 // Slot numbers between 1-6
         }
-      ]
+      }
+    ]
 
 }, { timestamps: true })
 

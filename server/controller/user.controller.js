@@ -7,7 +7,12 @@ const create_user_profile = async (req, res) => {
     try {
 
         const {
-            name, email, password, role, department
+            name,
+            email,
+            password,
+            role,
+            department,
+            freeSlots
         } = req.body
 
         // console.log('create-profile -->', req.body)
@@ -15,8 +20,16 @@ const create_user_profile = async (req, res) => {
         // hash password
         const hashPass = await generate_password(password)
 
+        /* TODO: implement this in frontend
+
+         "freeSlots": [
+            { "day": "Monday", "slotNumber": 2 },
+            { "day": "Wednesday", "slotNumber": 4 }
+        ] 
+        */
+
         const user_data = new userModel({
-            name, email, password:hashPass, role, department
+            name, email, password: hashPass, role, department
         })
 
         const saved_data = await user_data.save()
