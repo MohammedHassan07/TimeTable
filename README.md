@@ -51,7 +51,7 @@ You can use either **MongoDB Atlas (Cloud)** or **MongoDB Local**. Update the `.
 4. Replace `<username>` and `<password>` with your credentials.
 5. Update your `.env` file in the backend directory:
 ```env
-PORT=5000
+PORT=3000
 DB_URL=mongodb+srv://<username>:<password>@cluster.mongodb.net/timetableDB?retryWrites=true&w=majority
 ```
 ## 🛠️ Installing MongoDB Community Server (Local Setup)
