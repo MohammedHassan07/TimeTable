@@ -8,19 +8,19 @@ const timetableSchema = new Schema({
 
     schedule: [
         {
+
             day: { type: String, enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], required: true },
 
             slots: [
                 {
-                    slotNumber: { type: Number, min: 1, max: 6, required: true }, 
+                    slotNumber: { type: Number, min: 1, max: 6, required: true }, // Lecture slot numbers 1 to 6
                     subject: { type: String, required: true },
                     teacher: { type: Schema.Types.ObjectId, ref: 'user', required: true }
                 }
             ]
-        }
-    ]
+        }]
 }, { timestamps: true })
 
-const timetableModel = model('timetable', timetableSchema)
+const Timetable = model('timetable', timetableSchema)
 
-module.exports = timetableModel
+module.exports = Timetable

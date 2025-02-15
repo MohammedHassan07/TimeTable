@@ -3,6 +3,20 @@ const { generate_password, compare_password } = require('../utils/hash')
 const { generate_token } = require('../utils/token')
 
 // Create user profile
+/*
+POST /api/users/register
+{
+  "name": "John Doe",
+  "email": "johndoe@example.com",
+  "password": "123456",
+  "role": "Teacher",
+  "department": "Computer",
+  "freeSlots": [
+    { "day": "Monday", "slotNumber": 2 },
+    { "day": "Wednesday", "slotNumber": 4 }
+  ]
+}
+*/
 const create_user_profile = async (req, res) => {
     try {
 

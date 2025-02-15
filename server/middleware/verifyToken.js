@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const userModel = require('../models/user.model')
 
 function verify_jwt_token(req, res, next) {
 
@@ -41,8 +42,13 @@ function verify_jwt_token(req, res, next) {
 }
 
 
-const adminMiddleware = (req, res, next) => {
-    if (req.user.role !== 'Admin') return res.status(403).json({ message: 'Access denied, admin only' })
+const adminMiddleware = async (req, res, next) => {
+
+    const user = await userModel.findOne({ _id: req.id })
+
+    // console.log(user, req.id)
+
+    if (user.role !== 'Admin') return res.status(403).json({ message: 'Access denied, admin only' })
     next()
 }
 module.exports = { verify_jwt_token, adminMiddleware }

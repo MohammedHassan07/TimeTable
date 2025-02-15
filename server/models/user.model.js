@@ -1,14 +1,22 @@
 const { Schema, model } = require('mongoose')
+const bcrypt = require('bcryptjs')
 
-const userSchema = new Schema({
+const userSchema = new Schema(
+  {
 
-    name: String,
-    email: { type: String, unique: true },
-    password: String,
-    
+    name: { type: String, required: true },
+
+    email: { type: String, unique: true, required: true, lowercase: true, trim: true },
+
+    password: { type: String, required: true },
+
     role: { type: String, enum: ['Admin', 'Teacher'], required: true },
-    department: { type: String, enum: ['Computer', 'Mechanical', 'Electrical', 'Civil'], required: true },
-  
+    department: { 
+      type: String, 
+      enum: ['Computer', 'Mechanical', 'Electrical', 'Civil'], 
+      required: function() { return this.role === 'Teacher' } // Department required for teachers
+    },
+
     freeSlots: [
       {
         day: { 
@@ -23,10 +31,11 @@ const userSchema = new Schema({
           max: 6 // Slot numbers between 1-6
         }
       }
-    ]
+    ]}, 
+  { timestamps: true }
+)
 
-}, { timestamps: true })
 
-const userModel = model('user', userSchema)
+const userModel = model('User', userSchema)
 
 module.exports = userModel

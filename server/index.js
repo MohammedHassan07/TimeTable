@@ -15,5 +15,7 @@ app.listen(PORT, () => {
 })
 
 const userRoute = require('./routes/user.routes')
+const timetableRoutes = require('./routes/timetable.routes')
 
 app.use('/auth', userRoute)
+app.use('/timetable', timetableRoutes)
