@@ -54,10 +54,39 @@ You can use either **MongoDB Atlas (Cloud)** or **MongoDB Local**. Update the `.
 PORT=5000
 DB_URL=mongodb+srv://<username>:<password>@cluster.mongodb.net/timetableDB?retryWrites=true&w=majority
 ```
+## 🛠️ Installing MongoDB Community Server (Local Setup)
+
+If you want to run MongoDB locally instead of using MongoDB Atlas, follow these steps to install MongoDB Community Server.
+
+#### Option 2: Using MongoDB Community server
+- Visit the official MongoDB website:  
+  👉 [MongoDB Download Page](https://www.mongodb.com/try/download/community)
+- Select **your OS** (Windows, macOS, or Linux).
+- Choose the **MongoDB Community Server** version.
+- Download and install MongoDB.
+
+### 📌 Step 2: Start the MongoDB Server
+#### Windows:
+1. Open **Command Prompt (cmd)** as Administrator.
+2. Navigate to the MongoDB installation directory:
+   ```sh
+   cd C:\Program Files\MongoDB\Server\6.0\bin
+   ```
 
 ### Step 7: Hit the command
+  ```sh
+  npm start
+  ```
+
+## 📥 Installation and Setup for Frontend
+### Step 1: Goto frontend folder, open terminal and run the command
 ```sh
-npm start
+npm install
+```
+Step 2: Start development server of ReactJS
+```sh
+npm run dev
 ```
 
-## 📥 Installation and Setup for Backend
+Step 3: Open you browser and hit the url
+[Time Table Management](http://localhost:5173)
