@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import postRequest from '../services/postRequest'
 import { toast } from "react-toastify";
+import GenerateCharts from './GenerateCharts';
 
 const Dashboard = () => {
 
@@ -48,52 +49,58 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-semibold text-gray-700">Generate Timetable</h2>
-      <form onSubmit={handleSubmit} className="mt-4">
-        <div className="mb-3">
-          <label className="block text-gray-700">Branch</label>
-          <select value={branch} onChange={(e) => setBranch(e.target.value)} className="w-full p-2 border rounded">
-            <option>Computer</option>
-            <option>Mechanical</option>
-            <option>Electrical</option>
-            <option>Civil</option>
-          </select>
-        </div>
 
-        <div className="mb-3">
-          <label className="block text-gray-700">Year</label>
-          <select value={year} onChange={(e) => setYear(e.target.value)} className="w-full p-2 border rounded">
-            <option>First Year</option>
-            <option>Second Year</option>
-            <option>Third Year</option>
-            <option>Final Year</option>
-          </select>
-        </div>
+    // Generate timetable
+    // <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+    //   <h2 className="text-2xl font-semibold text-gray-700">Generate Timetable</h2>
+    //   <form onSubmit={handleSubmit} className="mt-4">
+    //     <div className="mb-3">
+    //       <label className="block text-gray-700">Branch</label>
+    //       <select value={branch} onChange={(e) => setBranch(e.target.value)} className="w-full p-2 border rounded">
+    //         <option>Computer</option>
+    //         <option>Mechanical</option>
+    //         <option>Electrical</option>
+    //         <option>Civil</option>
+    //       </select>
+    //     </div>
 
-        {subjects.map((subject, index) => (
-          <div key={index} className="flex space-x-2 mb-3">
-            <input
-              type="text"
-              placeholder="Subject"
-              value={subject.subject}
-              onChange={(e) => handleChange(index, "subject", e.target.value)}
-              className="w-1/2 p-2 border rounded"
-            />
-            <input
-              type="text"
-              placeholder="Teacher ID"
-              value={subject.teacherId}
-              onChange={(e) => handleChange(index, "teacherId", e.target.value)}
-              className="w-1/2 p-2 border rounded"
-            />
-          </div>
-        ))}
+    //     <div className="mb-3">
+    //       <label className="block text-gray-700">Year</label>
+    //       <select value={year} onChange={(e) => setYear(e.target.value)} className="w-full p-2 border rounded">
+    //         <option>First Year</option>
+    //         <option>Second Year</option>
+    //         <option>Third Year</option>
+    //         <option>Final Year</option>
+    //       </select>
+    //     </div>
 
-        <button type="button" onClick={handleAddSubject} className="text-blue-500">+ Add Subject</button>
-        <button type="submit" className="mt-3 bg-blue-500 text-white px-4 py-2 rounded">Generate</button>
-      </form>
-    </div>
+    //     {subjects.map((subject, index) => (
+    //       <div key={index} className="flex space-x-2 mb-3">
+    //         <input
+    //           type="text"
+    //           placeholder="Subject"
+    //           value={subject.subject}
+    //           onChange={(e) => handleChange(index, "subject", e.target.value)}
+    //           className="w-1/2 p-2 border rounded"
+    //         />
+    //         <input
+    //           type="text"
+    //           placeholder="Teacher ID"
+    //           value={subject.teacherId}
+    //           onChange={(e) => handleChange(index, "teacherId", e.target.value)}
+    //           className="w-1/2 p-2 border rounded"
+    //         />
+    //       </div>
+    //     ))}
+
+    //     <button type="button" onClick={handleAddSubject} className="text-blue-500">+ Add Subject</button>
+    //     <button type="submit" className="mt-3 bg-blue-500 text-white px-4 py-2 rounded">Generate</button>
+    //   </form>
+    // </div>
+    <>
+    <GenerateCharts />
+
+    </>
   )
 }
 

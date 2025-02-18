@@ -43,7 +43,7 @@ const create_user_profile = async (req, res) => {
         */
 
         const user_data = new userModel({
-            name, email, password: hashPass, role, department
+            name, email, password: hashPass, role, department, freeSlots
         })
 
         const saved_data = await user_data.save()

@@ -110,6 +110,13 @@ function Register() {
                     </select>
                 </div>
 
+                {/* TODO: Add dropdown to select free slot -> slot number and day 
+                    "freeSlots": [
+                        { "day": "Monday", "slotNumber": 2 },
+                        { "day": "Wednesday", "slotNumber": 4 }
+                    ]
+                */}
+
                 <div className="flex flex-col">
 
                     <Link to={'/login'}>Already Have an account Login</Link>

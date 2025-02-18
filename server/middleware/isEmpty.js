@@ -17,7 +17,7 @@ module.exports = function isEmpty(req, res, next) {
 
             if (key !== 'image') {
 
-                if (data[key] === undefined || data[key] === null || data[key].trim() === '') {
+                if (data[key] === undefined || data[key] === null || data[key] === '') {
 
                     return res.status(400).json({
                         status: 400,

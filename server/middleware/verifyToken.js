@@ -44,11 +44,19 @@ function verify_jwt_token(req, res, next) {
 
 const adminMiddleware = async (req, res, next) => {
 
-    const user = await userModel.findOne({ _id: req.id })
+    try {
 
-    // console.log(user, req.id)
 
-    if (user.role !== 'Admin') return res.status(403).json({ message: 'Access denied, admin only' })
-    next()
+        const user = await userModel.findOne({ _id: req.id })
+
+        // console.log(user)
+
+        if (user.role !== 'Admin') return res.status(403).json({ message: 'Access denied, admin only' })
+        next()
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ flag: false, message: 'Internal Server Error' })
+    }
 }
 module.exports = { verify_jwt_token, adminMiddleware }
