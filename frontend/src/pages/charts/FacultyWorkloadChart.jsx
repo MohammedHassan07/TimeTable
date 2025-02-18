@@ -9,54 +9,40 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 const FacultyWorkloadChart = () => {
 
     const [chartData, setChartData] = useState({ labels: [], datasets: [] });
-    const [chartData2, setChartData2] = useState({ labels: [], datasets: [] });
-
-
+    const [response, setResponse] = useState({})
+  
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await getRequest('/api/chart/workload');
-
-                // console.log('API Response:', response); // Debugging
 
                 if (!response) {
                     console.error("Error: API response is empty or undefined");
                     return;
                 }
 
+                setResponse(response);
+                
+                const labels = Object.keys(response).slice(7);
+                const values = Object.values(response).slice(7);
+                const quarterLength = Math.ceil(values.length / 4);
 
-                const halfLength = Object.keys(response).length / 2;
-
-                const labels1 = Object.keys(response).slice(7, halfLength);
-                const values1 = Object.values(response).slice(7, halfLength);
-
-
-                // console.log(labels1, labels2);
+                const datasets = [];
+                for (let i = 0; i < 4; i++) {
+                    datasets.push({
+                        label: `Faculty Workload (${i * quarterLength}-${(i + 1) * quarterLength})`,
+                        data: values.slice(i * quarterLength, (i + 1) * quarterLength),
+                        backgroundColor: `rgba(${75 + i * 20}, 192, 192, 0.6)`,
+                        borderColor: `rgba(${75 + i * 20}, 192, 192, 1)`,
+                        borderWidth: 1
+                    });
+                }
 
                 setChartData({
-                    labels: labels1,
-                    datasets: [{
-                        label: "Faculty Workload (0-96)",
-                        data: values1,
-                        backgroundColor: "rgba(75, 192, 192, 0.6)",
-                        borderColor: "rgba(75, 192, 192, 1)",
-                        borderWidth: 1
-                    }]
+                    labels: labels.slice(0, quarterLength), // Adjust labels for the first graph
+                    datasets: datasets
                 });
 
-                const labels2 = Object.keys(response).slice(halfLength);
-                const values2 = Object.values(response).slice(halfLength);
-                setChartData2(prevData => ({
-                    ...prevData,
-                    labels: labels2,
-                    datasets: [{
-                        label: "Faculty Workload (97 to last)",
-                        data: values2,
-                        backgroundColor: "rgba(75, 192, 192, 0.6)",
-                        borderColor: "rgba(75, 192, 192, 1)",
-                        borderWidth: 1
-                    }]
-                }));
             } catch (error) {
                 console.error("Error fetching chart data:", error);
             }
@@ -65,16 +51,17 @@ const FacultyWorkloadChart = () => {
         fetchData();
     }, []);
 
-   
-    
-
-    return (
-
-        <>
-
-            <Bar className="w-full" data={chartData} />;
-            <Bar className="w-full" data={chartData2} />;
-        </>)
+   return (
+    <>
+        <div className="flex flex-wrap justify-center items-center">
+            {chartData.datasets.map((dataset, index) => (
+                <div key={index} className="w-1/2 mt-2">
+                    <Bar className="" data={{ labels: chartData.labels, datasets: [dataset] }} />
+                </div>
+            ))}
+        </div>
+    </>
+);
 };
 
 export default FacultyWorkloadChart;
