@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Pie } from "react-chartjs-2";
 import getRequest from "../../services/getRequest";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement } from "chart.js";
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
+
 
 const CoursePieChart = () => {
     const [chartData, setChartData] = useState({ labels: [], datasets: [] });
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await getRequest('/api/chart/workload');
-            console.log('work load chart', response);
-            const labels = Object.keys(response.data);
-            const values = Object.values(response.data);
+            const response = await getRequest('/api/chart/courses');
+            
+            // console.log('work load chart', response);
+
+            const labels = Object.keys(response);
+            const values = Object.values(response);
 
             setChartData({
                 labels,
@@ -25,7 +31,7 @@ const CoursePieChart = () => {
         fetchData();
     }, []);
 
-    return <Pie data={chartData} />;
+    return <Pie className="" data={chartData} />;
 };
 
 export default CoursePieChart;

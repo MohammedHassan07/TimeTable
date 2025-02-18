@@ -1,6 +1,5 @@
 export default async function postRequest(endPoint, data) {
 
-
     const token  = localStorage.getItem('token')
     // console.log(data, token)
 

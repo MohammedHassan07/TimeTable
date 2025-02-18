@@ -1,10 +1,23 @@
 const ExcelJS = require("exceljs");
 const path = require("path");
 
+const uploadFile = async (req, res) => {
+    try {
+        if (req.file) {
+            res.status(200).json({messsage: "File uploaded successfully"})
+        } else {
+            res.status(400).json({messsage: "No file upload"})
+        }
+    } catch (error) {
+        console.error("Error processing courses:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+
+    }
+}
 const facultyWorkLoad = async (req, res) => {
     try {
         const filePath = path.join(__dirname, "/Master TT Sem-II 2024-25 (1).xlsx");
-        
+
         const workbook = new ExcelJS.Workbook();
         await workbook.xlsx.readFile(filePath);
 
@@ -45,7 +58,7 @@ const courses = async (req, res) => {
         // Debugging: Check available sheet names
         console.log("Available Sheets:", workbook.worksheets.map(sheet => sheet.name));
 
-        const sheet = workbook.getWorksheet("Course Stream Report");
+        const sheet = workbook.getWorksheet("STREAMS");
 
         if (!sheet) {
             return res.status(400).json({ error: "Sheet 'Course Stream Report' not found" });
@@ -68,4 +81,18 @@ const courses = async (req, res) => {
     }
 }
 
-module.exports = { facultyWorkLoad, courses };
+const timetable = async (req, res) => {
+    try {
+
+    } catch (error) {
+
+        console.error("Error processing courses:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+module.exports = {
+    facultyWorkLoad,
+    courses,
+    uploadFile
+};
