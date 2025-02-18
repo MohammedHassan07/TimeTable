@@ -56,7 +56,7 @@ const courses = async (req, res) => {
         await workbook.xlsx.readFile(filePath);
 
         // Debugging: Check available sheet names
-        console.log("Available Sheets:", workbook.worksheets.map(sheet => sheet.name));
+        // console.log("Available Sheets:", workbook.worksheets.map(sheet => sheet.name));
 
         const sheet = workbook.getWorksheet("STREAMS");
 

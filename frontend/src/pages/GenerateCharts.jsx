@@ -7,6 +7,7 @@ import uploadFile from '../services/uploadFile';
 
 const GenerateCharts = () => {
     const [file, setFile] = useState(null);
+    const [chartsVisible, setChartsVisible] = useState(false);
 
     async function handleGenerate() {
         if (!file) {
@@ -20,14 +21,18 @@ const GenerateCharts = () => {
         try {
             const response = await uploadFile('/api/chart/draw-graphs', formData);
 
-            if (response.status === 200) {
-                const data = await response.json(); // Ensure response is read properly
-               
-                console.log("Response Data:", data);
+            if (response.flag) {
+
+                setChartsVisible(true); 
+
+                alert("File uploaded successfully.");
+
             } else {
+
                 alert("File upload failed.");
             }
         } catch (error) {
+
             console.error("Error uploading file:", error);
             alert("An error occurred while uploading the file.");
         }
@@ -37,10 +42,10 @@ const GenerateCharts = () => {
         <div className="flex flex-col">
             <div className="flex items-center space-x-4 p-4 bg-gray-100 rounded shadow">
                 <div>
-                    <input 
-                        type="file" 
-                        onChange={(e) => setFile(e.target.files?.[0] || null)} 
-                        className="border border-gray-300 rounded p-2" 
+                    <input
+                        type="file"
+                        onChange={(e) => setFile(e.target.files?.[0] || null)}
+                        className="border border-gray-300 rounded p-2"
                     />
                 </div>
                 <div>
@@ -53,21 +58,19 @@ const GenerateCharts = () => {
                 </div>
             </div>
 
-            <h1 className="text-3xl font-bold text-center">Reports Dashboard</h1>
-
-            <div className="flex flex-col mt-6">
-                <div className="bg-white shadow-md w-full border-t-2 border-gray-500">
-                    <FacultyWorkloadChart />
+            {chartsVisible ? ( // Render charts only if chartsVisible is true
+                <div className="flex flex-col mt-6 ">
+                    <div className="bg-white shadow-md w-full border-gray-500 text-center p-2">
+                        <FacultyWorkloadChart />
+                    </div>
+                    <div className="bg-white p-4 shadow-md border-t-2 border-gray-500 w-96">
+                        <CoursePieChart />
+                    </div>
                 </div>
+            ) : (
 
-                <div className="bg-white p-4 shadow-md border-t-2 border-gray-500 w-96">
-                    <CoursePieChart />
-                </div>
-
-                {/* <div className="bg-white p-4 shadow-md"><DepartmentTimetableChart /></div> */}
-
-                {/* <div className="bg-white p-4 shadow-md"><FacultyQualificationChart /></div> */}
-            </div>
+                <h2>Upload file to get insights</h2>
+            )}
         </div>
     );
 };

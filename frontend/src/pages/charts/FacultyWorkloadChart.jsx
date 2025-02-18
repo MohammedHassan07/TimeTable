@@ -34,7 +34,8 @@ const FacultyWorkloadChart = () => {
                         data: values.slice(i * quarterLength, (i + 1) * quarterLength),
                         backgroundColor: `rgba(${75 + i * 20}, 192, 192, 0.6)`,
                         borderColor: `rgba(${75 + i * 20}, 192, 192, 1)`,
-                        borderWidth: 1
+                        borderWidth: 1,
+                        color: '#666000'
                     });
                 }
 
@@ -51,12 +52,14 @@ const FacultyWorkloadChart = () => {
         fetchData();
     }, []);
 
-   return (
+ return (
     <>
-        <div className="flex flex-wrap justify-center items-center">
+                    <h2 className="text-xl font-bold text-left">Faculty Workload</h2>
+        <div className="flex flex-wrap justify-center items-center border-2 border-gray-500">
+
             {chartData.datasets.map((dataset, index) => (
-                <div key={index} className="w-1/2 mt-2">
-                    <Bar className="" data={{ labels: chartData.labels, datasets: [dataset] }} />
+                <div key={index} className="w-full sm:w-1/2 mt-2">
+                    <Bar className="w-full" data={{ labels: chartData.labels, datasets: [dataset] }} />
                 </div>
             ))}
         </div>

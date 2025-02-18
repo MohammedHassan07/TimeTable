@@ -31,7 +31,13 @@ const CoursePieChart = () => {
         fetchData();
     }, []);
 
-    return <Pie className="" data={chartData} />;
+    return(
+        <>
+
+    <h2 className="text-xl font-bold">Courses</h2>
+        <Pie className="" data={chartData} />;
+        </>
+    ) 
 };
 
 export default CoursePieChart;

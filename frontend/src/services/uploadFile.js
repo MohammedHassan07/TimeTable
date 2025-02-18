@@ -1,6 +1,6 @@
 export default async function uploadFile(endPoint, data) {
 
-    const token  = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
 
     const res = await fetch(endPoint, {
         method: 'POST',
@@ -10,7 +10,11 @@ export default async function uploadFile(endPoint, data) {
         body: data
     });
 
+    if (res.status !== 200) {
+        return { flag: false }
+    }
+
     const response = await res.json();
 
-    return response;
+    return { response, flag: true }
 }
