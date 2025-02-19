@@ -1,14 +1,14 @@
 const ExcelJS = require("exceljs");
 const path = require("path");
-const fs = require('fs')
+const fs = require('fs');
 
 // Upload Excel file
 const uploadFile = async (req, res) => {
     try {
         if (req.file) {
-            res.status(200).json({messsage: "File uploaded successfully"})
+            res.status(200).json({ messsage: "File uploaded successfully" })
         } else {
-            res.status(400).json({messsage: "No file upload"})
+            res.status(400).json({ messsage: "No file upload" })
         }
     } catch (error) {
         console.error("Error processing courses:", error);
@@ -21,13 +21,24 @@ const uploadFile = async (req, res) => {
 const facultyWorkLoad = async (req, res) => {
     try {
 
+        const dirContent = fs.readdirSync('./uploads');
 
-        const filePath = path.join(__dirname, "/Master TT Sem-II 2024-25 (1).xlsx");
+        // console.log('dir', dirContent);
+
+        const recentFile = dirContent
+            .map(file => ({
+                name: file,
+                time: fs.statSync(path.join('./uploads', file)).mtime.getTime()
+            }))
+            .sort((a, b) => b.time - a.time)[0];
+
+        const filePath = './uploads/'+recentFile.name
+
+        // console.log('Most recent file:', filePath);
 
         const workbook = new ExcelJS.Workbook();
         await workbook.xlsx.readFile(filePath);
 
-        // Debugging: Check available sheet names
         // console.log("Available Sheets:", workbook.worksheets.map(sheet => sheet.name));
 
         const sheet = workbook.getWorksheet("STAFF LIST");
