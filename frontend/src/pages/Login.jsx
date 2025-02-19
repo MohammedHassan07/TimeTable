@@ -29,18 +29,18 @@ function Login() {
             const endPoint = '/api/auth/login'
             const response = await postRequest(endPoint, data)
 
-            // console.log('login', response.data.token)
+            console.log('login', response.response.data.token)
 
-            localStorage.setItem('token', response.data.token)
-            if (response.status !== 200) {
-
+            if (!response.flag) {
+                
                 setMessage(response.message)
                 setTimeout(() => {
-
+                    
                     setMessage('')
                 }, 2000)
             } else {
-
+                
+                localStorage.setItem('token', response.response.data.token)
                 navigate('/')
             }
         }

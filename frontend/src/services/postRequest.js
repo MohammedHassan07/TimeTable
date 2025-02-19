@@ -1,6 +1,6 @@
 export default async function postRequest(endPoint, data) {
 
-    const token  = localStorage.getItem('token')
+    const token = localStorage.getItem('token')
     // console.log(data, token)
 
     const res = await fetch(endPoint, {
@@ -13,8 +13,11 @@ export default async function postRequest(endPoint, data) {
     })
 
     const response = await res.json()
+    // console.log(response)
 
-    // console.log('post request', response)
+    if (res.status !== 200) {
+        return { flag: false, message: response.message }
+    }
 
-    return response
+    return { response, flag: true }
 }

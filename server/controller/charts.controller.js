@@ -1,6 +1,8 @@
 const ExcelJS = require("exceljs");
 const path = require("path");
+const fs = require('fs')
 
+// Upload Excel file
 const uploadFile = async (req, res) => {
     try {
         if (req.file) {
@@ -14,8 +16,12 @@ const uploadFile = async (req, res) => {
 
     }
 }
+
+// Faculty workload chart
 const facultyWorkLoad = async (req, res) => {
     try {
+
+
         const filePath = path.join(__dirname, "/Master TT Sem-II 2024-25 (1).xlsx");
 
         const workbook = new ExcelJS.Workbook();
