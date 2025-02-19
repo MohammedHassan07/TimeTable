@@ -10,7 +10,7 @@ const FacultyWorkloadChart = () => {
 
     const [chartData, setChartData] = useState({ labels: [], datasets: [] });
     const [response, setResponse] = useState({})
-  
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -22,7 +22,7 @@ const FacultyWorkloadChart = () => {
                 }
 
                 setResponse(response);
-                
+
                 const labels = Object.keys(response).slice(7);
                 const values = Object.values(response).slice(7);
                 const quarterLength = Math.ceil(values.length / 4);
@@ -52,19 +52,19 @@ const FacultyWorkloadChart = () => {
         fetchData();
     }, []);
 
- return (
-    <>
-                    <h2 className="text-xl font-bold text-left">Faculty Workload</h2>
-        <div className="flex flex-wrap justify-center items-center border-2 border-gray-500">
+    return (
+        <>
+            <h2 className="text-xl font-bold text-left">Faculty Workload</h2>
+            <div className="flex flex-wrap justify-center items-center border-2 border-gray-500">
 
-            {chartData.datasets.map((dataset, index) => (
-                <div key={index} className="w-full sm:w-1/2 mt-2">
-                    <Bar className="w-full" data={{ labels: chartData.labels, datasets: [dataset] }} />
-                </div>
-            ))}
-        </div>
-    </>
-);
+                {chartData.datasets.map((dataset, index) => (
+                    <div key={index} className="w-full sm:w-1/2 mt-2">
+                        <Bar className="w-full" data={{ labels: chartData.labels, datasets: [dataset] }} />
+                    </div>
+                ))}
+            </div>
+        </>
+    );
 };
 
 export default FacultyWorkloadChart;

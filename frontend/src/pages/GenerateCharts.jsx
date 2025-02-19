@@ -4,6 +4,7 @@ import CoursePieChart from "./charts/CoursePieChart";
 import DepartmentTimetableChart from "./charts/DepartmentTimetableChart";
 import FacultyQualificationChart from "./charts/FacultyQualificationChart";
 import uploadFile from '../services/uploadFile';
+import TimetableCharts from "./charts/WorkLoad";
 
 const GenerateCharts = () => {
     const [file, setFile] = useState(null);
@@ -21,7 +22,7 @@ const GenerateCharts = () => {
         try {
             const response = await uploadFile('/api/chart/draw-graphs', formData);
 
-            console.log(response)
+            // console.log(response)
             if (response.status !== 200) {
 
                 setChartsVisible(true); 
@@ -66,6 +67,10 @@ const GenerateCharts = () => {
                     </div>
                     <div className="bg-white p-4 shadow-md border-t-2 border-gray-500 w-96">
                         <CoursePieChart />
+                    </div>
+
+                    <div className="bg-white p-4 shadow-md border-t-2 border-gray-500 w-96">
+                        <TimetableCharts />
                     </div>
                 </div>
             ) : (
