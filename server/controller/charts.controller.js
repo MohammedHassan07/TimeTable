@@ -11,7 +11,7 @@ const uploadFile = async (req, res) => {
             res.status(400).json({ messsage: "No file upload" })
         }
     } catch (error) {
-        console.error("Error processing courses:", error);
+        console.error("Error while uploading the file", error);
         res.status(500).json({ message: "Internal Server Error" });
 
     }
