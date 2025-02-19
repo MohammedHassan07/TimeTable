@@ -12,7 +12,7 @@ export default async function uploadFile(endPoint, data) {
 
     const response = await res.json();
 
-    console.log(response)
+    // console.log(response)
 
     return response
 }
