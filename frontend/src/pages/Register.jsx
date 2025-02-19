@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import isEmpty from "../utils/isEmpty";
 import postRequest from "../services/postRequest";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,6 +12,7 @@ function Register() {
     const [role, setRole] = useState("")
     const [department, setDepartment] = useState("")
     const [message, setMessage] = useState("")
+    const [token, setToken] = useState('')
 
 
     const handleSubmit = async (e) => {
@@ -47,6 +48,18 @@ function Register() {
             }
         }
     };
+
+    useEffect(() => {
+
+        const token = localStorage.getItem('token')
+        if (token) {
+
+            setToken(localStorage.getItem('token'))
+
+            //   console.log('Token found:', token)
+            navigate('/')
+        }
+    }, [])
 
     return (
         <div className="flex flex-col items-center justify-center h-screen">
@@ -119,7 +132,7 @@ function Register() {
 
                 <div className="flex flex-col">
 
-                    <Link to={'/login'}>Already Have an account Login</Link>
+                    <Link to={'/login'} className="">Already Have an account <span className="underline"> Login</span></Link>
 
                     <button className="bg-blue-500 text-white px-4 py-2 rounded w-full mt-4 hover:cursor-pointer" type="submit">Register</button>
                 </div>

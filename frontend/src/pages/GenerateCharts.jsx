@@ -21,7 +21,8 @@ const GenerateCharts = () => {
         try {
             const response = await uploadFile('/api/chart/draw-graphs', formData);
 
-            if (response.flag) {
+            console.log(response)
+            if (response.status !== 200) {
 
                 setChartsVisible(true); 
 

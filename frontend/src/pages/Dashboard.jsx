@@ -18,7 +18,7 @@ const Dashboard = () => {
     if (token) {
 
       setToken(localStorage.getItem('token'))
-      console.log(token)
+      
       // console.log('Token found:', token)
     } else {
 

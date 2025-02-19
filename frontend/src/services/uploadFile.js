@@ -10,11 +10,9 @@ export default async function uploadFile(endPoint, data) {
         body: data
     });
 
-    if (res.status !== 200) {
-        return { flag: false }
-    }
-
     const response = await res.json();
 
-    return { response, flag: true }
+    console.log(response)
+
+    return response
 }

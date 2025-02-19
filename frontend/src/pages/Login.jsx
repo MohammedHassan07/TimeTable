@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import postRequest from "../services/postRequest";
 import isEmpty from "../utils/isEmpty";
@@ -9,7 +9,8 @@ function Login() {
     const navigate = useNavigate()
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [message, setMessage] = useState("");
+    const [message, setMessage] = useState("");  
+    const [token, setToken] = useState('')
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -47,6 +48,18 @@ function Login() {
         }
     };
 
+     useEffect(() => {
+    
+        const token = localStorage.getItem('token')
+        if (token) {
+    
+          setToken(localStorage.getItem('token'))
+      
+        //   console.log('Token found:', token)
+          navigate('/')
+        }
+      }, [])
+
     return (
         <div className="flex flex-col items-center justify-center h-screen">
             <h1 className="text-2xl font-bold mb-4">Login</h1>
@@ -70,7 +83,7 @@ function Login() {
 
                 <div className="flex flex-col">
 
-                    <Link to={'/register'}>Dont Have an account Register here</Link>
+                    <Link to={'/register'}>Dont Have an account <span className="underline"> Register</span></Link>
                     <button className="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:cursor-pointer" type="submit">Login</button>
                 </div>
             </form>

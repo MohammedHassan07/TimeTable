@@ -68,7 +68,22 @@ const facultyWorkLoad = async (req, res) => {
 
 const courses = async (req, res) => {
     try {
-        const filePath = path.join(__dirname, "/Master TT Sem-II 2024-25 (1).xlsx");
+        
+        const dirContent = fs.readdirSync('./uploads');
+
+        // console.log('dir', dirContent);
+
+        const recentFile = dirContent
+            .map(file => ({
+                name: file,
+                time: fs.statSync(path.join('./uploads', file)).mtime.getTime()
+            }))
+            .sort((a, b) => b.time - a.time)[0];
+
+        const filePath = './uploads/'+recentFile.name
+
+        // console.log('Most recent file:', filePath);
+
         const workbook = new ExcelJS.Workbook();
         await workbook.xlsx.readFile(filePath);
 
