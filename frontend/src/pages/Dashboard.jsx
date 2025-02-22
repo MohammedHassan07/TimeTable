@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Link, Outlet, useNavigate } from 'react-router-dom'
+import {Outlet, useNavigate } from 'react-router-dom'
 import postRequest from '../services/postRequest'
 import { toast } from "react-toastify";
 import GenerateCharts from './GenerateCharts';
 import Teachers from './Teachers';
+import Aside from '../components/Aside';
 
 const Dashboard = () => {
 
@@ -99,26 +100,15 @@ const Dashboard = () => {
     //   </form>
     // </div>
     <>
-      {/* <GenerateCharts /> */}
+
 
       {/* main */}
       <div className='flex'>
 
-        {/* aside */}
-        <div className='min-h-screen bg-gray-800 w-72 flex p-2'>
-
-          <ul className='flex flex-col justify-start items-start min-h-screen text-white w-full gap-4'>
-            <li className='border rounded-lg border-white p-2 w-full hover:cursor-pointer' >
-              <Link to={'/teachers/create'}>Generate Report</Link>
-            </li>
-            <li className='border rounded-lg border-white p-2 w-full hover:cursor-pointer' >Teachers</li>
-            <li className='border rounded-lg border-white p-2 w-full hover:cursor-pointer' >Generate Schedules</li>
-            <li className='border rounded-lg border-white p-2 w-full hover:cursor-pointer '>Log out</li>
-            </ul>
-        </div>
+       <Aside />
 
         {/* content */}
-        <div className='w-full bg-red-400 min-h-screen'>
+        <div className='w-full bg-gray-100 min-h-screen'>
           <Outlet />
         </div>
       </div>

@@ -5,6 +5,8 @@ import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import Navbar from './components/Navbar'
 import Teachers from './pages/Teachers'
+import GenerateCharts from './pages/GenerateCharts'
+import GenerateSchedule from './pages/GenerateSchedule'
 
 function Layout({ children }) {
 
@@ -36,7 +38,11 @@ function App() {
             <Route path='/register' element={<Register />} />
 
             <Route path='/' element={<Dashboard />} >
+
+            <Route path='/render-charts' element={<GenerateCharts />}/>
               <Route path='/teachers/create' element={<Teachers />}/>
+
+              <Route path='/schedule' element={<GenerateSchedule />}/>
             </Route>
 
 

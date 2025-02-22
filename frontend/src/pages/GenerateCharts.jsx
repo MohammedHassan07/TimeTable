@@ -25,7 +25,7 @@ const GenerateCharts = () => {
             // console.log(response)
             if (response.status !== 200) {
 
-                setChartsVisible(true); 
+                setChartsVisible(true);
 
                 alert("File uploaded successfully.");
 
@@ -41,42 +41,45 @@ const GenerateCharts = () => {
     }
 
     return (
-        <div className="flex flex-col">
-            <div className="flex items-center space-x-4 p-4 bg-gray-100 rounded shadow">
-                <div>
-                    <input
-                        type="file"
-                        onChange={(e) => setFile(e.target.files?.[0] || null)}
-                        className="border border-gray-300 rounded p-2"
-                    />
+
+        <div className="p-2 flex flex-col justify-center items-center">
+            <div className="flex flex-col w-full">
+                <div className="flex justify-between items-center space-x-4 p-4 shadow border-b-2 border-text-gray-800">
+                    <div className="w-full">
+                        <input
+                            type="file"
+                            onChange={(e) => setFile(e.target.files?.[0] || null)}
+                            className="border border-gray-800 rounded p-2 w-full text-gray-800 "
+                        />
+                    </div>
+                    <div>
+                        <button
+                            onClick={handleGenerate}
+                            className="bg-gray-900 text-white font-semibold py-2 px-4 rounded hover:cursor-pointer hover:bg-gray-700"
+                        >
+                            Generate
+                        </button>
+                    </div>
                 </div>
-                <div>
-                    <button
-                        onClick={handleGenerate}
-                        className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:cursor-pointer hover:bg-blue-600"
-                    >
-                        Generate
-                    </button>
-                </div>
+
+                {chartsVisible ? ( // Render charts only if chartsVisible is true
+                    <div className="flex flex-col mt-6 ">
+                        <div className="bg-white shadow-md w-full border-gray-500 text-center p-2">
+                            <FacultyWorkloadChart />
+                        </div>
+                        <div className="bg-white p-4 shadow-md border-t-2 border-gray-500 w-96">
+                            <CoursePieChart />
+                        </div>
+
+                        <div className="bg-white p-4 shadow-md border-t-2 border-gray-500 w-96">
+                            <TimetableCharts />
+                        </div>
+                    </div>
+                ) : (
+
+                    <h2>Upload file to get insights</h2>
+                )}
             </div>
-
-            {chartsVisible ? ( // Render charts only if chartsVisible is true
-                <div className="flex flex-col mt-6 ">
-                    <div className="bg-white shadow-md w-full border-gray-500 text-center p-2">
-                        <FacultyWorkloadChart />
-                    </div>
-                    <div className="bg-white p-4 shadow-md border-t-2 border-gray-500 w-96">
-                        <CoursePieChart />
-                    </div>
-
-                    <div className="bg-white p-4 shadow-md border-t-2 border-gray-500 w-96">
-                        <TimetableCharts />
-                    </div>
-                </div>
-            ) : (
-
-                <h2>Upload file to get insights</h2>
-            )}
         </div>
     );
 };
