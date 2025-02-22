@@ -4,6 +4,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import Navbar from './components/Navbar'
+import Teachers from './pages/Teachers'
 
 function Layout({ children }) {
 
@@ -34,7 +35,10 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
 
-            <Route path='/' element={<Dashboard />} />
+            <Route path='/' element={<Dashboard />} >
+              <Route path='/teachers/create' element={<Teachers />}/>
+            </Route>
+
 
           </Routes>
         </Layout>

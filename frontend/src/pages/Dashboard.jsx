@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
 import postRequest from '../services/postRequest'
 import { toast } from "react-toastify";
 import GenerateCharts from './GenerateCharts';
+import Teachers from './Teachers';
 
 const Dashboard = () => {
 
@@ -18,7 +19,7 @@ const Dashboard = () => {
     if (token) {
 
       setToken(localStorage.getItem('token'))
-      
+
       // console.log('Token found:', token)
     } else {
 
@@ -98,7 +99,30 @@ const Dashboard = () => {
     //   </form>
     // </div>
     <>
-    <GenerateCharts />
+      {/* <GenerateCharts /> */}
+
+      {/* main */}
+      <div className='flex'>
+
+        {/* aside */}
+        <div className='min-h-screen bg-gray-800 w-72 flex p-2'>
+
+          <ul className='flex flex-col justify-start items-start min-h-screen text-white w-full gap-4'>
+            <li className='border rounded-lg border-white p-2 w-full hover:cursor-pointer' >
+              <Link to={'/teachers/create'}>Generate Report</Link>
+            </li>
+            <li className='border rounded-lg border-white p-2 w-full hover:cursor-pointer' >Teachers</li>
+            <li className='border rounded-lg border-white p-2 w-full hover:cursor-pointer' >Generate Schedules</li>
+            <li className='border rounded-lg border-white p-2 w-full hover:cursor-pointer '>Log out</li>
+            </ul>
+        </div>
+
+        {/* content */}
+        <div className='w-full bg-red-400 min-h-screen'>
+          <Outlet />
+        </div>
+      </div>
+      {/* <Teachers /> */}
 
     </>
   )
