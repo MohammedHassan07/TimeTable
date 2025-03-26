@@ -99,16 +99,9 @@ const Teachers = () => {
                 <option value="Mechanical">Mechanical</option>
               </select>
             </div>
+            
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Program Type</label>
-              <select value={formData.programType} onChange={(e) => setFormData({ ...formData, programType: e.target.value })} className="w-full p-2 border border-gray-300 rounded-lg" required>
-                <option value="Degree">Degree</option>
-                <option value="Diploma">Diploma</option>
-              </select>
-            </div>
-
-            <div>
-              <h3 className="text-sm font-medium text-gray-700 mb-2">Select Schedule</h3>
+              <h3 className="text-sm font-medium text-gray-700 mb-2">Select Freee Schedule</h3>
               <div className="flex flex-wrap gap-7">
                 {days.map((day) => (
                   <div key={day} className="mb-2">

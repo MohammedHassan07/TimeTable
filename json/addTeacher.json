@@ -1,0 +1,20 @@
+{
+    "name": "snape",
+    "email": "snape@hogwardz.com",
+    "department": "Computer",
+   
+    "freeSlots": [
+        {
+            "day": "Monday",
+            "slotNumber": 1
+        },
+        {
+            "day": "Tuesday",
+            "slotNumber": 2
+        },
+        {
+            "day": "Wednesday",
+            "slotNumber": 3
+        }
+    ]
+}
