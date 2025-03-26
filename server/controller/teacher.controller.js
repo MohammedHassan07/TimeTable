@@ -6,22 +6,15 @@ const createTeacherProfile = async (req, res) => {
 
     try {
 
-        console.log(req.body)
+        // console.log('create teacher profile -->', req.body)
 
         // const { subjects } = req.body
-
-        // const existingSubjects = await Subject.find({ _id: { $in: subjects } })
-
-        // if (existingSubjects.length !== subjects.length) {
-        //     return res.status(400).json({ message: 'One or more subjects not found', data:{
-        //         exist: existingSubjects.length,
-        //         current: subjects.length
-        //     } })
-        // }
 
         const admin = req.id
 
         const newTeacher = new Teacher({...req.body, admin});
+
+        // update the teacher profile while assigning the subjects, (update subjects field)
 
         const saved_data = await newTeacher.save()
 

@@ -9,7 +9,7 @@ const userRoute = express.Router()
 userRoute.post('/add-teacher',
 
     isEmpty,
-    isUnique,
+    // isUnique,
     verify_jwt_token,
     createTeacherProfile
 )

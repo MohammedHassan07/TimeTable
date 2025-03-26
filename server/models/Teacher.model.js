@@ -15,11 +15,11 @@ const teacherSchema = new Schema({
     required: true
   },
 
-  programType: {
-    type: String,
-    enum: ['Diploma', 'Degree', 'Both'],
-    required: true
-  },
+  // programType: {
+  //   type: String,
+  //   enum: ['Diploma', 'Degree', 'Both'],
+  //   required: true
+  // },
 
   subjects: [{ type: Types.ObjectId, ref: 'Subjects' }], // Reference to Subjects collection
 
