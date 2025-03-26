@@ -15,9 +15,15 @@ app.listen(PORT, () => {
 })
 
 const userRoute = require('./routes/user.routes')
+const subjectRoutes = require('./routes/subjects.routes')
+const teacherRoutes = require('./routes/teacher.routes')
+
 const timetableRoutes = require('./routes/timetable.routes')
 const chart = require('./routes/charts.routes')
 
 app.use('/auth', userRoute)
-app.use('/timetable', timetableRoutes)
+app.use('/subject', subjectRoutes)
+app.use('/teacher', teacherRoutes)
+
+// app.use('/timetable', timetableRoutes)
 app.use('/chart', chart)

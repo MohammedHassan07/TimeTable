@@ -31,7 +31,7 @@ function Login() {
             const response = await postRequest(endPoint, data)
 
             // console.log('login', response.response.data.token)
-            console.log(response, response.data.token)
+            // console.log(response)
 
             if (response.status !== 200) {
                 
