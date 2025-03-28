@@ -18,6 +18,11 @@ const Aside = () => {
                         <Link className='block w-full h-full' to={'/teachers/create'}>Teachers</Link>
                     </li>
 
+                    <li
+                        className='border rounded-lg border-white p-2 w-full hover:cursor-pointer hover:bg-gray-200 hover:text-gray-800 transition duration-300' >
+                        <Link className='block w-full h-full' to={'/subjects'}>Subjects</Link>
+                    </li>
+
                     <li className='border rounded-lg border-white p-2 w-full hover:cursor-pointer hover:bg-gray-200 hover:text-gray-800 transition duration-300' >
                         <Link className='block w-full h-full' to={'/schedule'}>Generate Schedules</Link>
                     </li>

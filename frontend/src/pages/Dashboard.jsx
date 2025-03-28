@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import postRequest from '../services/postRequest'
 import { toast } from "react-toastify";
 import GenerateCharts from './GenerateCharts';
@@ -103,14 +103,15 @@ const Dashboard = () => {
 
 
       {/* main */}
-      <div className='flex'>
+      <div className="flex items-center justify-center">
 
-       <Aside />
+        {/* <Aside /> */}
 
         {/* content */}
-        <div className='w-full bg-gray-100 min-h-screen'>
+        <div className="w-[85vw] bg-gray-100 min-h-screen">
           <Outlet />
         </div>
+        
       </div>
       {/* <Teachers /> */}
 

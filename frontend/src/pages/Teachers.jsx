@@ -5,6 +5,7 @@ import postRequest from "../services/postRequest";
 const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const slots = [1, 2, 3, 4, 5, 6];
 
+// TODO: implemenet update profile
 const Teachers = () => {
   const [view, setView] = useState("list");
   const [teachers, setTeachers] = useState([]);
@@ -124,7 +125,7 @@ const Teachers = () => {
               </div>
             </div>
 
-            <button type="submit" className="w-full bg-gray-900 text-white py-2 rounded-lg hover:bg-gray-800">Submit</button>
+            <button type="submit" className="w-full bg-gray-900 text-white py-2 rounded-lg hover:bg-gray-800 hover:cursor-pointer">Submit</button>
           </div>
         </form>
       ) : (
