@@ -6,14 +6,24 @@ export default function Subjects() {
     const [branch, setBranch] = useState('');
     const [year, setYear] = useState('');
     const [semester, setSemester] = useState('');
-    const [subjects, setSubjects] = useState([{ name: '', code: '' }]);
-    const [practical, setPractical] = useState('');
-
+    const [subjects, setSubjects] = useState([{ name: '', code: '', abbreviation: '' }]);
     const [view, setView] = useState("list");
+    const [practicals, setPracticals] = useState([{ name: '', lab: '' }]);
+
+
+    const addPractical = () => {
+        setPracticals([...practicals, { name: '', lab: '' }]);
+    };
+
+    const handleChange = (index, field, value) => {
+        const newPracticals = [...practicals];
+        newPracticals[index][field] = value;
+        setPracticals(newPracticals);
+    };
 
     // Add new subject field
     const addSubject = () => {
-        setSubjects([...subjects, { name: '', code: '' }]);
+        setSubjects([...subjects, { name: '', code: '', abbreviation: '' }]);
     };
 
     // Handle subject input changes
@@ -33,23 +43,10 @@ export default function Subjects() {
             year,
             semester,
             subjects,
-            practical
+            practicals
         };
 
-        // Here we'll call your utility function
-        // try {
-        //   // Import your function from utils
-        //   const { saveTimetable } = await import('../utils/timetableUtils');
-
-        //   // Call it with the two parameters it needs
-        //   const result = await saveTimetable(formData.branch, formData.year);
-
-        //   console.log('Success!', result);
-        //   alert('Timetable saved successfully!');
-        // } catch (error) {
-        //   console.error('Error saving:', error);
-        //   alert('Failed to save timetable');
-        // }
+        // Make Network Request 
     };
 
     return (
@@ -126,7 +123,7 @@ export default function Subjects() {
                     <div className="mb-6">
                         <h2 className="text-lg font-semibold mb-3">Subjects</h2>
                         {subjects.map((subject, index) => (
-                            <div key={index} className="grid grid-cols-2 gap-4 mb-3">
+                            <div key={index} className="grid grid-cols-3 gap-4 mb-3">
                                 <div>
                                     <label className="block text-sm font-medium mb-1">Subject Name</label>
                                     <input
@@ -139,7 +136,21 @@ export default function Subjects() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium mb-1 flex items-center gap-1">
+                                    <label className="text-sm font-medium mb-1 flex items-center gap-1">
+                                        <Code className="h-4 w-4" /> Subject Abbreviation
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={subject.abbreviation}
+                                        onChange={(e) => handleSubjectChange(index, 'abbreviation', e.target.value)}
+                                        className="w-full p-2 border rounded"
+                                        placeholder="Enter subject Abbreviation"
+                                        required
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="text-sm font-medium mb-1 flex items-center gap-1">
                                         <Code className="h-4 w-4" /> Subject Code
                                     </label>
                                     <input
@@ -156,7 +167,7 @@ export default function Subjects() {
                         <button
                             type="button"
                             onClick={addSubject}
-                            className="flex items-center gap-1 text-blue-500 text-sm"
+                            className="flex items-center gap-1 text-blue-500 text-sm hover:cursor-pointer"
                         >
                             <Plus className="h-4 w-4" /> Add Subject
                         </button>
@@ -164,43 +175,77 @@ export default function Subjects() {
 
                     {/* Practicals */}
                     <div className="mb-6">
-                        <h2 className="text-lg font-semibold mb-3 flex items-center gap-1">
-                            <FlaskConical className="text-green-500" /> Practicals
-                        </h2>
-                        <div>
-                            <label className="block text-sm font-medium mb-1">Subject Name</label>
-                            <input
-                                type="text"
-                                value={practical}
-                                onChange={(e) => setPractical(e.target.value)}
-                                className="w-full p-2 border rounded"
-                                placeholder="Enter practical subject name"
-                                required
-                            />
-                        </div>
+                        <h1 className="text-2xl font-bold mb-6">Practicals</h1>
+
+                        {practicals.map((practical, index) => (
+                            <div key={index} className="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">Subject Name</label>
+                                    <input
+                                        type="text"
+                                        value={practical.name}
+                                        onChange={(e) => handleChange(index, 'name', e.target.value)}
+                                        className="w-full p-2 border rounded"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">Lab Name</label>
+                                    <input
+                                        type="text"
+                                        value={practical.lab}
+                                        onChange={(e) => handleChange(index, 'lab', e.target.value)}
+                                        className="w-full p-2 border rounded"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        ))}
+
+                        <button
+                            type="button"
+                            onClick={addPractical}
+                            className="flex items-center gap-1 text-blue-500 mb-6 hover:cursor-pointer"
+                        >
+                            <Plus className="h-4 w-4" /> Add Practical
+                        </button>
+
                     </div>
 
                     {/* Submit Button */}
                     <button
                         type="submit"
-                        className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
+                        className="w-full bg-gray-900 text-white py-2 rounded-lg hover:bg-gray-800 hover:cursor-pointer"
                     >
                         Submit
                     </button>
                 </form>
             ) : (
                 <div className="bg-white rounded-lg shadow-sm w-full">
+
+                    <div className="grid grid-cols-3 gap-4 mb-3">
+                        <p className="text-gray-700"><strong>Branch:</strong> {branch || 'Not selected'}</p>
+                        <p className="text-gray-700"><strong>Year:</strong> {year || 'Not selected'}</p>
+                        <p className="text-gray-700"><strong>Semester:</strong> {semester || 'Not selected'}</p>
+                    </div>
                     {subjects.length === 0 ? (
-                        <div className="p-8 text-center text-gray-500">No teachers added yet. Click Create to add one.</div>
+                        <div className="p-8 text-center text-gray-500">No subjects added yet. Click Create to add one.</div>
                     ) : (
                         <div className="divide-y divide-gray-200">
                             {subjects.map((subject, index) => (
                                 <div key={index} className="p-4 flex items-center justify-between">
                                     <div>
-                                        {/* <h3 className="font-medium text-gray-900">{teacher.name}</h3>
-                                        <p className="text-sm text-gray-500">{teacher.email}</p>
-                                        <p className="text-sm text-gray-500">{teacher.department}</p>
-                                        <p className="text-sm text-gray-500">Schedule: {teacher.freeSlots.map(({ day, slotNumber }) => `${day} (Slot ${slotNumber})`).join(", ")}</p> */}
+                                        <h3 className="font-medium text-gray-900">{subject.name}</h3>
+                                        <p className="text-sm text-gray-500">{subject.abbreviation}</p>
+                                        <p className="text-sm text-gray-500">{subject.code}</p>
+                                    </div>
+                                </div>
+                            ))}
+                            {practicals.map((practical, index) => (
+                                <div key={index} className="p-4 flex items-center justify-between">
+                                    <div>
+                                        <h3 className="font-medium text-gray-900">{practical.name}</h3>
+                                        <p className="text-sm text-gray-500">{practical.lab}</p>
                                     </div>
                                 </div>
                             ))}
