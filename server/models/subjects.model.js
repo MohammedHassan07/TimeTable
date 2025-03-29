@@ -4,7 +4,21 @@ const practicalSchema = new Schema({
 
     name: String,
 
-    labName: String
+    labName: String,
+
+    year: String,
+    
+    semester: Number,
+    
+    program: {
+        type: String,
+        enum: ['Diploma', 'Degree']
+    },
+
+    department: {
+        type: String,
+        enum: ['Computer', 'Mechanical', 'Electrical', 'Civil'],
+    },
 });
 
 const subjectSchema = new Schema({
@@ -28,15 +42,10 @@ const subjectSchema = new Schema({
         type: String,
         enum: ['Diploma', 'Degree']
     },
-
-    practicals: [practicalSchema]
 });
 
-const Subjects = new Schema({
 
-    subjects: [subjectSchema]
-})
+const TheorySubjects = model('TheorySubject', subjectSchema)
+const Practicals = model('Practical', practicalSchema)
 
-const Subject = model('Subject', Subjects)
-
-module.exports = Subject;
+module.exports = {TheorySubjects, Practicals}

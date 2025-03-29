@@ -1,51 +1,49 @@
-const Subject = require("../models/subjects.model")
+const { TheorySubjects, Practicals } = require("../models/subjects.model")
 
 // add subject
 const addSubject = async (req, res) => {
+
     try {
-
-
-        /* Request JSON
-    {
-        "subjects": [
-            {
-                "name": "Data Structures",
-                "abbreviation": "DSA",
-                "semester": 3,
-                "department": "Computer",
-                "programType": "Degree",
-                "practical": {
-                    "name": "DSA Lab",
-                    "abbreviation": "DSA Lab",
-                    "labName": "Computer Lab 1"
-                }
-            }, {
-                "name": "Data Structures",
-                "abbreviation": "DSA",
-                "semester": 3,
-                "department": "Computer",
-                "programType": "Degree",
-                "practical": {
-                    "name": "DSA Lab",
-                    "abbreviation": "DSA Lab",
-                    "labName": "Computer Lab 1"
-                }
-            }
-        ]
-    }
-
-        */
 
         const { program, department, year, semester, subjects, practicals } = req.body
 
-        // console.log('add subject -->', practicals)
+        // console.log('add subject -->', subjects)
 
-        const subjectsData = new Subject({subjects: {program, department, year, semester, subjects, practicals}})
+        let savedTheorySubjects = []
+        let savedPracticalSubjects = []
 
-        const saved_data = await subjectsData.save()
+        for (const subj of subjects) {
+
+            const theorySubject = new TheorySubjects({
+                program,
+                department,
+                year,
+                semester,
+                ...subj
+            })
+
+            const savedTheorySubject = await theorySubject.save();
+
+            savedTheorySubjects.push(savedTheorySubject);
+        }
+
+        for (const pract of practicals) {
+
+            const practicalSubject = new Practicals({
+                program,
+                department,
+                year,
+                semester,
+                ...pract
+            })
+            const savedPracticalSubject = await practicalSubject.save();
+
+            savedPracticalSubjects.push(savedPracticalSubject);
+        }
 
         res.status(201).json({
-            saved_data,
+            savedTheorySubjects,
+            savedPracticalSubjects,
             "status": 201,
             "message": "Subject Added successfully"
         })
@@ -59,6 +57,7 @@ const addSubject = async (req, res) => {
         })
     }
 }
+
 
 // view subject
 const viewSubject = async (req, res) => {
