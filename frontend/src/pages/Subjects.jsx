@@ -1,18 +1,20 @@
 import { useState } from 'react';
 import { BookOpen, Code, Calendar, ChevronDown, Plus, FlaskConical, View } from 'lucide-react';
+import postRequest from '../services/postRequest'
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function Subjects() {
 
-    const [branch, setBranch] = useState('');
+    const [department, setDepartment] = useState('');
     const [year, setYear] = useState('');
     const [semester, setSemester] = useState('');
-    const [subjects, setSubjects] = useState([{ name: '', code: '', abbreviation: '' }]);
+    const [program, setProgram] = useState('');
+    const [subjects, setSubjects] = useState([{ name: '', subjectCode: '', abbreviation: '' }]);
     const [view, setView] = useState("list");
-    const [practicals, setPracticals] = useState([{ name: '', lab: '' }]);
-
+    const [practicals, setPracticals] = useState([{ name: '', labName: '' }]);
 
     const addPractical = () => {
-        setPracticals([...practicals, { name: '', lab: '' }]);
+        setPracticals([...practicals, { name: '', labName: '' }]);
     };
 
     const handleChange = (index, field, value) => {
@@ -23,7 +25,7 @@ export default function Subjects() {
 
     // Add new subject field
     const addSubject = () => {
-        setSubjects([...subjects, { name: '', code: '', abbreviation: '' }]);
+        setSubjects([...subjects, { name: '', subjectCode: '', abbreviation: '' }]);
     };
 
     // Handle subject input changes
@@ -39,19 +41,57 @@ export default function Subjects() {
 
         // Prepare data to send
         const formData = {
-            branch,
+            program,
+            department,
             year,
             semester,
             subjects,
             practicals
         };
+        console.log(formData)
 
         // Make Network Request 
+        const response = await postRequest('/api/subject/add-subject', formData)
+        console.log(response)
+
+        const notify = () => {
+            if (response.status !== 201) {
+
+                toast.error(response.message, {
+                    position: "bottom-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            } else {
+                toast.success(response.message, {
+                    position: "bottom-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+
+            }
+        };
+
+        if (response.status !== 201) {
+
+            notify()
+        } else {
+            notify()
+            console.log('added')
+        }
     };
 
     return (
         <div className="p-2 flex flex-col justify-center items-center w-full">
-
+            <ToastContainer />
             <div className='flex justify-between items-center mb-8 border-b-2 border-gray-800 w-full'>
                 <h1 className="text-2xl font-bold mb-6 flex items-center gap-2">
                     Subjects
@@ -69,22 +109,40 @@ export default function Subjects() {
             {view === 'create' ? (
 
                 <form className='bg-white p-6 rounded-lg shadow-sm w-full' onSubmit={handleSubmit}>
-                    {/* Branch, Year, Semester Selection */}
-                    <div className="grid grid-cols-3 gap-4 mb-6">
+                    {/* department, Year, Semester Selection */}
+                    <div className="grid grid-cols-4 gap-4 mb-6">
+
                         <div>
                             <label className="text-sm font-medium mb-1 flex items-center gap-1">
-                                <ChevronDown className="h-4 w-4" /> Branch
+                                <ChevronDown className="h-4 w-4" /> Program
                             </label>
                             <select
-                                value={branch}
-                                onChange={(e) => setBranch(e.target.value)}
+                                value={program}
+                                onChange={(e) => setProgram(e.target.value)}
                                 className="w-full p-2 border rounded"
                                 required
                             >
-                                <option value="">Select Branch</option>
-                                <option value="CSE">CSE</option>
-                                <option value="ECE">ECE</option>
-                                <option value="ME">ME</option>
+                                <option value="">Select Program</option>
+                                <option value="Degree">Degree</option>
+                                <option value="Diploma">Diploma</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="text-sm font-medium mb-1 flex items-center gap-1">
+                                <ChevronDown className="h-4 w-4" /> Department
+                            </label>
+                            <select
+                                value={department}
+                                onChange={(e) => setDepartment(e.target.value)}
+                                className="w-full p-2 border rounded"
+                                required
+                            >
+                                <option value="">Select Department</option>
+                                <option value="Computer">Computer</option>
+                                <option value="Mechanical">Mechanical</option>
+                                <option value="Electrical">Electrical</option>
+                                <option value="Civil">Civil</option>
                             </select>
                         </div>
 
@@ -97,10 +155,10 @@ export default function Subjects() {
                                 required
                             >
                                 <option value="">Select Year</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
+                                <option value="FE">FE</option>
+                                <option value="SE">SE</option>
+                                <option value="TE">TE</option>
+                                <option value="BE">BE</option>
                             </select>
                         </div>
 
@@ -155,8 +213,8 @@ export default function Subjects() {
                                     </label>
                                     <input
                                         type="text"
-                                        value={subject.code}
-                                        onChange={(e) => handleSubjectChange(index, 'code', e.target.value)}
+                                        value={subject.subjectCode}
+                                        onChange={(e) => handleSubjectChange(index, 'subjectCode', e.target.value)}
                                         className="w-full p-2 border rounded"
                                         placeholder="Enter subject code"
                                         required
@@ -193,8 +251,8 @@ export default function Subjects() {
                                     <label className="block text-sm font-medium mb-1">Lab Name</label>
                                     <input
                                         type="text"
-                                        value={practical.lab}
-                                        onChange={(e) => handleChange(index, 'lab', e.target.value)}
+                                        value={practical.labName}
+                                        onChange={(e) => handleChange(index, 'labName', e.target.value)}
                                         className="w-full p-2 border rounded"
                                         required
                                     />
@@ -224,7 +282,7 @@ export default function Subjects() {
                 <div className="bg-white rounded-lg shadow-sm w-full">
 
                     <div className="grid grid-cols-3 gap-4 mb-3">
-                        <p className="text-gray-700"><strong>Branch:</strong> {branch || 'Not selected'}</p>
+                        <p className="text-gray-700"><strong>Department:</strong> {department || 'Not selected'}</p>
                         <p className="text-gray-700"><strong>Year:</strong> {year || 'Not selected'}</p>
                         <p className="text-gray-700"><strong>Semester:</strong> {semester || 'Not selected'}</p>
                     </div>
@@ -237,7 +295,7 @@ export default function Subjects() {
                                     <div>
                                         <h3 className="font-medium text-gray-900">{subject.name}</h3>
                                         <p className="text-sm text-gray-500">{subject.abbreviation}</p>
-                                        <p className="text-sm text-gray-500">{subject.code}</p>
+                                        <p className="text-sm text-gray-500">{subject.subjectCode}</p>
                                     </div>
                                 </div>
                             ))}
@@ -245,7 +303,7 @@ export default function Subjects() {
                                 <div key={index} className="p-4 flex items-center justify-between">
                                     <div>
                                         <h3 className="font-medium text-gray-900">{practical.name}</h3>
-                                        <p className="text-sm text-gray-500">{practical.lab}</p>
+                                        <p className="text-sm text-gray-500">{practical.labName}</p>
                                     </div>
                                 </div>
                             ))}

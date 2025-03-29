@@ -1,43 +1,42 @@
-const { Schema, model } = require('mongoose')
+const { Schema, model } = require('mongoose');
 
 const practicalSchema = new Schema({
 
     name: String,
 
     labName: String
+});
 
-})
-
-const subject = new Schema({
+const subjectSchema = new Schema({
 
     name: String,
 
-    abbreviation: String,
-
+    abbreviation: String, 
+ 
     semester: Number,
+
+    subjectCode: String,
 
     department: {
         type: String,
         enum: ['Computer', 'Mechanical', 'Electrical', 'Civil'],
     },
 
-    programType: {
+    year: String,
 
+    program: {
         type: String,
         enum: ['Diploma', 'Degree']
     },
 
-    practical: practicalSchema
+    practicals: [practicalSchema]
+});
 
+const Subjects = new Schema({
+
+    subjects: [subjectSchema]
 })
 
+const Subject = model('Subject', Subjects)
 
-
-const subjectsSchema = new Schema({
-
-    subjects: [subject]
-})
-
-
-const Subject = model('Subjects', subjectsSchema)
-module.exports = Subject
+module.exports = Subject;

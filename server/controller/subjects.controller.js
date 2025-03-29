@@ -35,10 +35,12 @@ const addSubject = async (req, res) => {
     }
 
         */
-        
-        // console.log('add subject -->', req.body)
 
-        const subjectsData = new Subject(req.body)
+        const { program, department, year, semester, subjects, practicals } = req.body
+
+        // console.log('add subject -->', practicals)
+
+        const subjectsData = new Subject({subjects: {program, department, year, semester, subjects, practicals}})
 
         const saved_data = await subjectsData.save()
 
