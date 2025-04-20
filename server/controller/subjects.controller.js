@@ -1,5 +1,6 @@
 const { TheorySubjects, Practicals } = require("../models/subjects.model")
 
+
 // add subject
 const addSubject = async (req, res) => {
 
@@ -77,8 +78,29 @@ const viewSubject = async (req, res) => {
     }
 }
 
+// view subject
+const viewSubjectByDepartment = async (req, res) => {
+    try {
+
+        const department = req.params.department
+
+        const subjects = await TheorySubjects.find({ department })
+
+        res.status(200).json({subjects})
+
+
+    } catch (error) {
+        console.log('view subject --> ', error)
+        res.status(500).json({
+            "status": 500,
+            "error": "Internal Server Error",
+            "message": "An error occurred while attempting to save the data. Please try again later."
+        })
+    }
+}
 module.exports = {
 
     addSubject,
-    viewSubject
+    viewSubject,
+    viewSubjectByDepartment
 }

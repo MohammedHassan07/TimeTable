@@ -1,4 +1,3 @@
-const Subject = require('../models/subjects.model');
 const Teacher = require('../models/Teacher.model')
 
 // create teacher profile
@@ -60,8 +59,29 @@ const viewTeachers = async (req, res) => {
     }
 }
 
+const viewTeachersByDepartment = async (req, res) => {
+    try {
+
+        const department = req.params.department
+
+        const teachers = await Teacher.find({ department })
+
+        res.status(200).json({teachers})
+
+
+    } catch (error) {
+        console.log('view subject --> ', error)
+        res.status(500).json({
+            "status": 500,
+            "error": "Internal Server Error",
+            "message": "An error occurred while attempting to save the data. Please try again later."
+        })
+    }
+}
+
 module.exports = {
 
     createTeacherProfile,
-    viewTeachers
+    viewTeachers,
+    viewTeachersByDepartment
 }
