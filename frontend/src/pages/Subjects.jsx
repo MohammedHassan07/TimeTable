@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BookOpen, Code, Calendar, ChevronDown, Plus, FlaskConical, View } from 'lucide-react';
 import postRequest from '../services/postRequest'
 import { ToastContainer, toast } from 'react-toastify';
+import getRequest from '../services/getRequest';
 
 export default function Subjects() {
 
@@ -89,11 +90,25 @@ export default function Subjects() {
         }
     };
 
+     useEffect(() => {
+    
+        const loadSubjectsData = async () => {
+    
+          const response = await getRequest('/api/subject/view-subjects')
+    
+          setSubjects(response.subjects)
+          console.log(response)
+        }
+    
+        loadSubjectsData()
+    
+      }, [])
+
     return (
         <div className="p-2 flex flex-col justify-center items-center w-full">
             <ToastContainer />
             <div className='flex justify-between items-center mb-8 border-b-2 border-gray-800 w-full'>
-                <h1 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                <h1 className="text-2xl font-semibold text-gray-900">
                     Subjects
                 </h1>
                 <div className="flex gap-4 p-2">

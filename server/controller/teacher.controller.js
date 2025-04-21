@@ -64,6 +64,8 @@ const viewTeachersByDepartment = async (req, res) => {
 
         const department = req.params.department
 
+        console.log('view teacher by department', department)
+
         const teachers = await Teacher.find({ department })
 
         res.status(200).json({teachers})

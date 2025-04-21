@@ -64,8 +64,11 @@ const addSubject = async (req, res) => {
 const viewSubject = async (req, res) => {
     try {
 
-        const { } = req.body
-        console.log('view subject -->', req.body)
+
+        const subjects = await TheorySubjects.find()
+        // console.log('view subject -->', subjects)
+
+        res.status(200).json({subjects})
 
 
     } catch (error) {
@@ -83,6 +86,8 @@ const viewSubjectByDepartment = async (req, res) => {
     try {
 
         const department = req.params.department
+
+        // console.log('view subject by department -->', department)
 
         const subjects = await TheorySubjects.find({ department })
 

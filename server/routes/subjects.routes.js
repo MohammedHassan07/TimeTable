@@ -19,7 +19,7 @@ subjectRoutes.get('/view-subjects',
     viewSubject
 )
 
-subjectRoutes.get('/view-subjects-by-department:/department',
+subjectRoutes.get('/view-subjects-by-department/:department',
 
     verify_jwt_token,
     viewSubjectByDepartment

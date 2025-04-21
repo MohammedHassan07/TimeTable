@@ -103,12 +103,12 @@ const Dashboard = () => {
 
 
       {/* main */}
-      <div className="flex items-center justify-center">
+      <div className="flex justify-center">
 
-        {/* <Aside /> */}
+        <Aside />
 
         {/* content */}
-        <div className="w-[85vw] bg-gray-100 min-h-screen">
+        <div className="w-[85vw] bg-gray-100 min-h-screen overflow-y-auto">
           <Outlet />
         </div>
         

@@ -14,7 +14,7 @@ export default async function getRequest(endPoint) {
 
     const response = await res.json()
 
-    // console.log('post request', response)
+    // console.log('get request', response)
 
     return response
 }

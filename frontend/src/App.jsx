@@ -8,6 +8,7 @@ import Teachers from './pages/Teachers'
 import GenerateCharts from './pages/GenerateCharts'
 import GenerateSchedule from './pages/GenerateSchedule'
 import Subjects from './pages/Subjects'
+import AssignSubjects from './pages/AssignSubjects'
 
 function Layout({ children }) {
 
@@ -46,6 +47,9 @@ function App() {
               <Route path='/subjects' element={<Subjects />} />
 
               <Route path='/schedule' element={<GenerateSchedule />} />
+
+
+              <Route path='/assign-subjects' element={<AssignSubjects />} />
             </Route>
 
 

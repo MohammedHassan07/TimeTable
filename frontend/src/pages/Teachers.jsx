@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, View } from "lucide-react";
 import postRequest from "../services/postRequest";
+import getRequest from "../services/getRequest";
+
 
 const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const slots = [1, 2, 3, 4, 5, 6];
@@ -62,6 +64,20 @@ const Teachers = () => {
     const response = await postRequest("/api/teacher/add-teacher", newTeacher);
     console.log(response);
   };
+
+  useEffect(() => {
+
+    const loadTeachersData = async () => {
+
+      const response = await getRequest('/api/teacher/view-teacher')
+
+      setTeachers(response.teachers)
+      console.log(response)
+    }
+
+    loadTeachersData()
+
+  }, [])
 
   return (
     <div className="p-2 flex flex-col justify-center items-center w-full">
