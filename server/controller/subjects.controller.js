@@ -68,7 +68,7 @@ const viewSubject = async (req, res) => {
         const subjects = await TheorySubjects.find()
         // console.log('view subject -->', subjects)
 
-        res.status(200).json({subjects})
+        res.status(200).json({ subjects })
 
 
     } catch (error) {
@@ -91,7 +91,30 @@ const viewSubjectByDepartment = async (req, res) => {
 
         const subjects = await TheorySubjects.find({ department })
 
-        res.status(200).json({subjects})
+        const SE_subjects = subjects.filter(subject => subject.year === 'SE');
+        const TE_subjects = subjects.filter(subject => subject.year === 'TE');
+        const BE_subjects = subjects.filter(subject => subject.year === 'BE');
+
+
+        // let SE_subjects = [], TE_subjects = [], BE_subjects = [];
+
+        // for (const subject of subjects) {
+
+        //     if (subject.year === 'SE') {
+
+        //         SE_subjects.push(subject)
+        //     } else if (subject.year === 'TE') {
+
+        //         TE_subjects.push(subject)
+        //     } else if (subject.year === 'BE') {
+
+        //         BE_subjects.push(subject)
+        //     }
+        // }
+
+        console.log(TE_subjects)
+
+        res.status(200).json({ SE_subjects, TE_subjects, BE_subjects })
 
 
     } catch (error) {

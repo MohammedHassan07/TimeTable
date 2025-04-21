@@ -97,7 +97,7 @@ export default function Subjects() {
           const response = await getRequest('/api/subject/view-subjects')
     
           setSubjects(response.subjects)
-          console.log(response)
+        //   console.log(response)
         }
     
         loadSubjectsData()

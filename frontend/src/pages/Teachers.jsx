@@ -72,7 +72,7 @@ const Teachers = () => {
       const response = await getRequest('/api/teacher/view-teacher')
 
       setTeachers(response.teachers)
-      console.log(response)
+      // console.log(response)
     }
 
     loadTeachersData()
