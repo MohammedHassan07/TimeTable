@@ -9,7 +9,7 @@ const teacherSchema = new Schema({
   email: { type: String, required: true, unique: true },
 
   department: {
-    
+
     type: String,
     enum: ['Computer', 'Mechanical', 'Electrical', 'Civil', 'ENTC'],
     required: true
@@ -21,7 +21,8 @@ const teacherSchema = new Schema({
   //   required: true
   // },
 
-  subjects: [{ type: Types.ObjectId, ref: 'Subjects' }], // Reference to Subjects collection
+  Theory: [{ type: Types.ObjectId, ref: 'TheorySubject' }], // Reference to Subjects collection
+  practical: [{ type: Types.ObjectId, ref: 'Practical' }], // Reference to Subjects collection
 
   freeSlots: [
     {

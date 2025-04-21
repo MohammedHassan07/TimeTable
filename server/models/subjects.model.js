@@ -33,7 +33,7 @@ const subjectSchema = new Schema({
 
     department: {
         type: String,
-        enum: ['Computer', 'Mechanical', 'Electrical', 'Civil'],
+        enum: ['Computer', 'Mechanical', 'Electrical', 'Civil', 'ENTC'],
     },
 
     year: String,

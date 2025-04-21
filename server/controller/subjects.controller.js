@@ -89,32 +89,21 @@ const viewSubjectByDepartment = async (req, res) => {
 
         // console.log('view subject by department -->', department)
 
-        const subjects = await TheorySubjects.find({ department })
-
-        const SE_subjects = subjects.filter(subject => subject.year === 'SE');
-        const TE_subjects = subjects.filter(subject => subject.year === 'TE');
-        const BE_subjects = subjects.filter(subject => subject.year === 'BE');
+        const theorySubjects = await TheorySubjects.find({ department })
+        const practicalSubjects = await Practicals.find({ department })
 
 
-        // let SE_subjects = [], TE_subjects = [], BE_subjects = [];
+        const SE_subjects = theorySubjects.filter(subject => subject.year === 'SE');
+        const TE_subjects = theorySubjects.filter(subject => subject.year === 'TE');
+        const BE_subjects = theorySubjects.filter(subject => subject.year === 'BE');
 
-        // for (const subject of subjects) {
+        const SE_practicals = practicalSubjects.filter(prac => prac.year === 'SE')
+        const TE_practicals = practicalSubjects.filter(prac => prac.year === 'TE')
+        const BE_practicals = practicalSubjects.filter(prac => prac.year === 'BE')
 
-        //     if (subject.year === 'SE') {
+        // console.log('TE theory', TE_subjects, '\n practicals', TE_practicals)
 
-        //         SE_subjects.push(subject)
-        //     } else if (subject.year === 'TE') {
-
-        //         TE_subjects.push(subject)
-        //     } else if (subject.year === 'BE') {
-
-        //         BE_subjects.push(subject)
-        //     }
-        // }
-
-        console.log(TE_subjects)
-
-        res.status(200).json({ SE_subjects, TE_subjects, BE_subjects })
+        res.status(200).json({ SE_subjects, SE_practicals, TE_subjects, TE_practicals, BE_subjects, BE_practicals })
 
 
     } catch (error) {

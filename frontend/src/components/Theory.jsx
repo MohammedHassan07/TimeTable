@@ -1,6 +1,8 @@
 import React from 'react'
 
-const Subjects = ({ year, handleSubjectChange, subjects, selectedSubjects }) => {
+const Theory = ({ year, handleSubjectChange, subjects, selectedSubjects }) => {
+
+    // console.log(subjects)
     return (
         <div className="mb-6 w-full">
             <h2 className="text-gray-800 text-xl font-semibold mb-3">{year}</h2>
@@ -28,4 +30,4 @@ const Subjects = ({ year, handleSubjectChange, subjects, selectedSubjects }) => 
     )
 }
 
-export default Subjects
+export default Theory

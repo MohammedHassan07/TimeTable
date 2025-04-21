@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import getRequest from '../services/getRequest'
-import Subjects from '../components/Subjects'
+import Theory from '../components/Theory'
+import Practicals from '../components/Practicals'
 
 const departments = ['Computer', 'Mechanical', 'Civil', 'Electrical']
 
@@ -8,15 +9,30 @@ const AssignSubjects = () => {
     const [SE_subjects, setSE_subjects] = useState([])
     const [TE_subjects, setTE_subjects] = useState([])
     const [BE_subjects, setBE_subjects] = useState([])
+
+    const [SE_practicals, setSE_practicals] = useState([])
+    const [TE_practicals, setTE_practicals] = useState([])
+    const [BE_practicals, setBE_practicals] = useState([])
+
     const [teachers, setTeachers] = useState([])
     const [department, setDepartment] = useState('')
     const [faculty, setFaculty] = useState('')
     const [selectedSubjects, setSelectedSubjects] = useState({})
+    const [selectedPracticals, setSelectedPracticals] = useState({})
+
 
     const handleSubjectChange = (subjectId) => {
         setSelectedSubjects(prev => ({
             ...prev,
             [subjectId]: !prev[subjectId],
+        }))
+    }
+
+    const handlePracticalChange = (practicalId) => {
+        setSelectedPracticals(prev => ({
+
+            ...prev,
+            [practicalId]: !prev[practicalId]
         }))
     }
 
@@ -43,9 +59,18 @@ const AssignSubjects = () => {
                 ])
 
                 setTeachers(teachersRes.teachers || [])
+
                 setSE_subjects(subjectsRes.SE_subjects || [])
                 setTE_subjects(subjectsRes.TE_subjects || [])
                 setBE_subjects(subjectsRes.BE_subjects || [])
+
+                setSE_practicals(subjectsRes.SE_practicals || [])
+                setTE_practicals(subjectsRes.TE_practicals || [])
+                setBE_practicals(subjectsRes.BE_practicals || [])
+
+                // console.log(subjectsRes)
+
+
             } catch (err) {
                 console.error("Failed to load data", err)
             }
@@ -80,29 +105,66 @@ const AssignSubjects = () => {
                 {renderDropdown('Select Faculty', faculty, setFaculty, teachers)}
             </div>
 
-            <Subjects
-                year="SE Subjects"
-                handleSubjectChange={handleSubjectChange}
-                subjects={SE_subjects}
-                selectedSubjects={selectedSubjects}
-            />
-            <Subjects
-                year="TE Subjects"
-                handleSubjectChange={handleSubjectChange}
-                subjects={TE_subjects}
-                selectedSubjects={selectedSubjects}
-            />
-            <Subjects
-                year="BE Subjects"
-                handleSubjectChange={handleSubjectChange}
-                subjects={BE_subjects}
-                selectedSubjects={selectedSubjects}
-            />
+            {/* SE */}
+
+            <div>
+                <Theory
+                    year="SE Subjects"
+                    handleSubjectChange={handleSubjectChange}
+                    subjects={SE_subjects}
+                    selectedSubjects={selectedSubjects}
+                />
+
+                <Practicals
+                    year="SE Practicals"
+                    handlePracticalChange={handlePracticalChange}
+                    practicals={SE_practicals}
+                    selectedSubjects={selectedSubjects}
+                />
+            </div>
+
+            {/* TE */}
+            <div>
+
+                <Theory
+                    year="TE Subjects"
+                    handleSubjectChange={handleSubjectChange}
+                    subjects={TE_subjects}
+                    selectedSubjects={selectedSubjects}
+                />
+
+                <Practicals
+                    year="TE Practicals"
+                    handlePracticalChange={handlePracticalChange}
+                    practicals={TE_practicals}
+                    selectedPracticals={selectedPracticals}
+                />
+            </div>
+
+
+            {/* BE */}
+            <div>
+
+                <Theory
+                    year="BE Subjects"
+                    handleSubjectChange={handleSubjectChange}
+                    subjects={BE_subjects}
+                    selectedSubjects={selectedSubjects}
+                />
+
+                <Practicals
+                    year="BE Practicals"
+                    handlePracticalChange={handlePracticalChange}
+                    practicals={SE_practicals}
+                    selectedPracticals={selectedPracticals}
+                />
+
+            </div>
 
             <div className="flex justify-center mt-6">
                 <button
                     onClick={handleSubmit}
-                    className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                    className="px-7 py-1.5 bg-gray-900 text-white  rounded-lg hover:bg-gray-800 hover:cursor-pointer"
                 >
                     Submit
                 </button>
