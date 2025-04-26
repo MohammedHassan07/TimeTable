@@ -65,10 +65,11 @@ const viewSubject = async (req, res) => {
     try {
 
 
-        const subjects = await TheorySubjects.find()
-        // console.log('view subject -->', subjects)
+        const [theory, practicals] = await Promise.all([TheorySubjects.find(), await Practicals.find()])
+       
+        // console.log('view subject -->', theory)
 
-        res.status(200).json({ subjects })
+        res.status(200).json({ theory, practicals })
 
 
     } catch (error) {

@@ -14,6 +14,7 @@ export default function Subjects() {
     const [view, setView] = useState("list");
     const [practicals, setPracticals] = useState([{ name: '', labName: '' }]);
 
+
     const addPractical = () => {
         setPracticals([...practicals, { name: '', labName: '' }]);
     };
@@ -77,8 +78,14 @@ export default function Subjects() {
                     draggable: true,
                     progress: undefined,
                 });
-
             }
+
+            setProgram('');
+            setDepartment('');
+            setYear('');
+            setSemester('');
+            setSubjects([{ name: '', subjectCode: '', abbreviation: '' }]);
+            setPracticals([{ name: '', labName: '' }]);
         };
 
         if (response.status !== 201) {
@@ -90,22 +97,29 @@ export default function Subjects() {
         }
     };
 
-     useEffect(() => {
-    
-        const loadSubjectsData = async () => {
-    
-          const response = await getRequest('/api/subject/view-subjects')
-    
-          setSubjects(response.subjects)
-        //   console.log(response)
+    useEffect(() => {
+
+        if (view === "list") {
+
+            const loadSubjectsData = async () => {
+                const response = await getRequest('/api/subject/view-subjects');
+                setSubjects(response.theory);
+                setPracticals(response.practicals);
+                // console.log(response);
+            };
+            loadSubjectsData();
+        } else {
+            setProgram('');
+            setDepartment('');
+            setYear('');
+            setSemester('');
+            setSubjects([{ name: '', subjectCode: '', abbreviation: '' }]);
+            setPracticals([{ name: '', labName: '' }]);
         }
-    
-        loadSubjectsData()
-    
-      }, [])
+    }, [view]);
 
     return (
-        <div className="p-2 flex flex-col justify-center items-center w-full">
+        <div className="p-2 flex flex-col justify-center items-center w-full overflow-y-auto">
             <ToastContainer />
             <div className='flex justify-between items-center mb-8 border-b-2 border-gray-800 w-full'>
                 <h1 className="text-2xl font-semibold text-gray-900">
@@ -294,37 +308,55 @@ export default function Subjects() {
                     </button>
                 </form>
             ) : (
-                <div className="bg-white rounded-lg shadow-sm w-full">
+                <>
 
-                    <div className="grid grid-cols-3 gap-4 mb-3">
-                        <p className="text-gray-700"><strong>Department:</strong> {department || 'Not selected'}</p>
-                        <p className="text-gray-700"><strong>Year:</strong> {year || 'Not selected'}</p>
-                        <p className="text-gray-700"><strong>Semester:</strong> {semester || 'Not selected'}</p>
-                    </div>
+                    {/* <div className='flex items-center justify-start flex-col w-full'> */}
+
+                    <h2 className='font-bold text-xl text-gray-900'>Theory</h2>
+
+
                     {subjects.length === 0 ? (
                         <div className="p-8 text-center text-gray-500">No subjects added yet. Click Create to add one.</div>
                     ) : (
-                        <div className="divide-y divide-gray-200">
-                            {subjects.map((subject, index) => (
-                                <div key={index} className="p-4 flex items-center justify-between">
-                                    <div>
-                                        <h3 className="font-medium text-gray-900">{subject.name}</h3>
-                                        <p className="text-sm text-gray-500">{subject.abbreviation}</p>
-                                        <p className="text-sm text-gray-500">{subject.subjectCode}</p>
-                                    </div>
+                        <>
+                            <div className="bg-white rounded-lg shadow-sm w-full">
+
+                                <div className="divide-y divide-gray-200">
+                                    {subjects.map((subject, index) => (
+                                        <div key={index} className="p-4 flex items-center justify-between">
+                                            <div>
+                                                <h3 className="font-medium text-gray-900">{subject.name}</h3>
+                                                <p className="text-sm text-gray-500">{subject.abbreviation}</p>
+                                                <p className="text-sm text-gray-500">{subject.subjectCode}</p>
+                                                <p className="text-sm text-gray-500">{subject.semester}</p>
+                                                <p className="text-sm text-gray-500">{subject.program}</p>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
-                            {practicals.map((practical, index) => (
-                                <div key={index} className="p-4 flex items-center justify-between">
-                                    <div>
-                                        <h3 className="font-medium text-gray-900">{practical.name}</h3>
-                                        <p className="text-sm text-gray-500">{practical.labName}</p>
-                                    </div>
+                            </div>
+
+                            <h2 className='font-bold text-xl text-gray-900 mt-2'>Practicals</h2>
+
+                            <div className="bg-white rounded-lg shadow-sm w-full">
+                                <div className="divide-y divide-gray-200">
+
+                                    {practicals.map((practical, index) => (
+                                        <div key={index} className="p-4 flex items-center justify-between">
+                                            <div>
+                                                <h3 className="font-medium text-gray-900">{practical.name}</h3>
+                                                <p className="text-sm text-gray-500">{practical.labName}</p>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
-                        </div>
+                            </div>
+
+                        </>
                     )}
-                </div>
+
+                    {/* </div> */}
+                </>
             )}
 
         </div>

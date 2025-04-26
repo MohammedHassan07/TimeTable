@@ -155,7 +155,7 @@ const AssignSubjects = () => {
                 <Practicals
                     year="BE Practicals"
                     handlePracticalChange={handlePracticalChange}
-                    practicals={SE_practicals}
+                    practicals={BE_practicals}
                     selectedPracticals={selectedPracticals}
                 />
 
