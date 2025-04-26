@@ -7,6 +7,7 @@ import getRequest from '../services/getRequest';
 export default function Subjects() {
 
     const [department, setDepartment] = useState('');
+    const [departmentFilter, setDepartmentFilter] = useState('')
     const [year, setYear] = useState('');
     const [semester, setSemester] = useState('');
     const [program, setProgram] = useState('');
@@ -14,6 +15,18 @@ export default function Subjects() {
     const [view, setView] = useState("list");
     const [practicals, setPracticals] = useState([{ name: '', labName: '' }]);
 
+    const handleDepartmentFilterChange = async (e) => {
+
+        const filter = e.target.value
+        setDepartmentFilter(filter)
+
+        const response = await getRequest(`/api/subject/view-subjects-by-department/${filter}`)
+
+        // SE_subjects, SE_practicals, TE_subjects, TE_practicals, BE_subjects, BE_practicals
+        console.log(response)
+        setPracticals([response.SE_practicals, ...response.TE_practicals, response.BE_practicals])
+        setSubjects([...response.SE_subjects, ...response.TE_subjects, response.BE_subjects])
+    }
 
     const addPractical = () => {
         setPracticals([...practicals, { name: '', labName: '' }]);
@@ -309,6 +322,17 @@ export default function Subjects() {
                 </form>
             ) : (
                 <>
+
+                    <div className="w-full">
+                        <select value={departmentFilter} onChange={(e) => handleDepartmentFilterChange(e)} className="w-full p-2 border border-gray-300 rounded-lg" required>
+                            <option value="All">Select a department</option>
+                            <option value="Civil">Civil</option>
+                            <option value="Computer">Computer</option>
+                            <option value="Electrical">Electrical</option>
+                            <option value="ENTC">ENTC</option>
+                            <option value="Mechanical">Mechanical</option>
+                        </select>
+                    </div>
 
                     {/* <div className='flex items-center justify-start flex-col w-full'> */}
 

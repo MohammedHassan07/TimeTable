@@ -11,7 +11,7 @@ const createTeacherProfile = async (req, res) => {
 
         const admin = req.id
 
-        const newTeacher = new Teacher({...req.body, admin});
+        const newTeacher = new Teacher({ ...req.body, admin });
 
         // update the teacher profile while assigning the subjects, (update subjects field)
 
@@ -64,11 +64,18 @@ const viewTeachersByDepartment = async (req, res) => {
 
         const department = req.params.department
 
-        // console.log('view teacher by department', department)
+        console.log('view teacher by department', department)
 
-        const teachers = await Teacher.find({ department })
+        let teachers;
+        if (department === 'All') {
 
-        res.status(200).json({teachers})
+            teachers = await Teacher.find()
+        }else {
+               
+            teachers = await Teacher.find({ department })
+        }
+
+        res.status(200).json({ teachers })
 
 
     } catch (error) {

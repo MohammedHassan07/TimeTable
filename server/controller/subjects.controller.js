@@ -66,7 +66,7 @@ const viewSubject = async (req, res) => {
 
 
         const [theory, practicals] = await Promise.all([TheorySubjects.find(), await Practicals.find()])
-       
+
         // console.log('view subject -->', theory)
 
         res.status(200).json({ theory, practicals })
@@ -90,9 +90,15 @@ const viewSubjectByDepartment = async (req, res) => {
 
         // console.log('view subject by department -->', department)
 
-        const theorySubjects = await TheorySubjects.find({ department })
-        const practicalSubjects = await Practicals.find({ department })
+        let [theorySubjects, practicalSubjects] = [];
+        if (department === 'All') {
+            
+            [theorySubjects, practicalSubjects] = await Promise.all([TheorySubjects.find(), Practicals.find()])
+        } else {
+            [theorySubjects, practicalSubjects] = await Promise.all([TheorySubjects.find({ department }), Practicals.find({ department })])
+        }
 
+        // console.log(theorySubjects, practicalSubjects)
 
         const SE_subjects = theorySubjects.filter(subject => subject.year === 'SE');
         const TE_subjects = theorySubjects.filter(subject => subject.year === 'TE');

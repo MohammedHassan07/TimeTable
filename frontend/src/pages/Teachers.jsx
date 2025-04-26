@@ -9,6 +9,8 @@ const slots = [1, 2, 3, 4, 5, 6];
 
 // TODO: implemenet update profile
 const Teachers = () => {
+
+  const [departmentFilter, setDepartmentFilter] = useState('')
   const [view, setView] = useState("list");
   const [teachers, setTeachers] = useState([]);
   const [formData, setFormData] = useState({
@@ -18,6 +20,25 @@ const Teachers = () => {
     programType: "Degree",
     freeSlots: {},
   });
+
+  const loadTeachersData = async () => {
+
+    const response = await getRequest('/api/teacher/view-teacher')
+
+    setTeachers(response.teachers)
+    // console.log(response)
+  }
+
+  const handleDepartmentFilterChange = async (e) => {
+
+    const filter = e.target.value
+    setDepartmentFilter(filter)
+
+    const response = await getRequest(`/api/teacher/view-teacher-by-department/${filter}`)
+
+    setTeachers(response.teachers)
+      // console.log(response)
+  }
 
   const handleCheckboxChange = (day) => {
     setFormData((prev) => {
@@ -67,14 +88,6 @@ const Teachers = () => {
 
   useEffect(() => {
 
-    const loadTeachersData = async () => {
-
-      const response = await getRequest('/api/teacher/view-teacher')
-
-      setTeachers(response.teachers)
-      // console.log(response)
-    }
-
     loadTeachersData()
 
   }, [])
@@ -116,7 +129,7 @@ const Teachers = () => {
                 <option value="Mechanical">Mechanical</option>
               </select>
             </div>
-            
+
             <div>
               <h3 className="text-sm font-medium text-gray-700 mb-2">Select Freee Schedule</h3>
               <div className="flex flex-wrap gap-7">
@@ -145,26 +158,41 @@ const Teachers = () => {
           </div>
         </form>
       ) : (
-        <div className="bg-white rounded-lg shadow-sm w-full">
-          {teachers.length === 0 ? (
-            <div className="p-8 text-center text-gray-500">No teachers added yet. Click Create to add one.</div>
-          ) : (
-            <div className="divide-y divide-gray-200">
-              {teachers.map((teacher, index) => (
-                <div key={index} className="p-4 flex items-center justify-between">
-                  <div>
-                    <h3 className="font-medium text-gray-900">{teacher.name}</h3>
-                    <p className="text-sm text-gray-500">{teacher.email}</p>
-                    <p className="text-sm text-gray-500">{teacher.department}</p>
-                    <p className="text-sm text-gray-500">Schedule: {teacher.freeSlots.map(({ day, slotNumber }) => `${day} (Slot ${slotNumber})`).join(", ")}</p>
+        <>
+          {/* search */}
+          <div className="w-full">
+            <select value={departmentFilter} onChange={(e) => handleDepartmentFilterChange(e)} className="w-full p-2 border border-gray-300 rounded-lg" required>
+              <option value="All">Select a department</option>
+              <option value="Civil">Civil</option>
+              <option value="Computer">Computer</option>
+              <option value="Electrical">Electrical</option>
+              <option value="ENTC">ENTC</option>
+              <option value="Mechanical">Mechanical</option>
+            </select>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-sm w-full mt-2">
+            {teachers.length === 0 ? (
+              <div className="p-8 text-center text-gray-500">No teachers added yet. Click Create to add one.</div>
+            ) : (
+              <div className="divide-y divide-gray-200">
+                {teachers.map((teacher, index) => (
+                  <div key={index} className="p-4 flex items-center justify-between">
+                    <div>
+                      <h3 className="font-medium text-gray-900">{teacher.name}</h3>
+                      <p className="text-sm text-gray-500">{teacher.email}</p>
+                      <p className="text-sm text-gray-500">{teacher.department}</p>
+                      <p className="text-sm text-gray-500">Schedule: {teacher.freeSlots.map(({ day, slotNumber }) => `${day} (Slot ${slotNumber})`).join(", ")}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </>
       )}
     </div>
+
   );
 };
 
