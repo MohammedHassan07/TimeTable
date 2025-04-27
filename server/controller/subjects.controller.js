@@ -59,7 +59,6 @@ const addSubject = async (req, res) => {
     }
 }
 
-
 // view subject
 const viewSubject = async (req, res) => {
     try {
@@ -92,7 +91,7 @@ const viewSubjectByDepartment = async (req, res) => {
 
         let [theorySubjects, practicalSubjects] = [];
         if (department === 'All') {
-            
+
             [theorySubjects, practicalSubjects] = await Promise.all([TheorySubjects.find(), Practicals.find()])
         } else {
             [theorySubjects, practicalSubjects] = await Promise.all([TheorySubjects.find({ department }), Practicals.find({ department })])
@@ -122,9 +121,10 @@ const viewSubjectByDepartment = async (req, res) => {
         })
     }
 }
+
 module.exports = {
 
     addSubject,
     viewSubject,
-    viewSubjectByDepartment
+    viewSubjectByDepartment,
 }

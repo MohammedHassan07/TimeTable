@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react'
 import getRequest from '../services/getRequest'
 import Theory from '../components/Theory'
 import Practicals from '../components/Practicals'
+import notify from '../utils/Toast'
+import { ToastContainer } from 'react-toastify'
+import postRequest from '../services/postRequest'
 
-const departments = ['Computer', 'Mechanical', 'Civil', 'Electrical']
+
+const departments = ['Computer', 'Mechanical', 'ENTC', 'Civil', 'Electrical']
 
 const AssignSubjects = () => {
     const [SE_subjects, setSE_subjects] = useState([])
@@ -36,17 +40,44 @@ const AssignSubjects = () => {
         }))
     }
 
-    const handleSubmit = () => {
-        const assigned = Object.keys(selectedSubjects).filter(key => selectedSubjects[key])
-        const allSubjects = [...SE_subjects, ...TE_subjects, ...BE_subjects]
-        const selectedDetails = allSubjects.filter(subject => assigned.includes(subject._id))
+    const handleSubmit = async () => {
 
-        console.log('Assigned Subjects to Faculty:', {
-            department,
-            faculty,
-            assignedSubjects: selectedDetails
-        })
+        const assignedTheory = Object.keys(selectedSubjects).filter(key => selectedSubjects[key]);
+        const assignedPracticals = Object.keys(selectedPracticals).filter(key => selectedPracticals[key]);
+
+        if (!faculty) {
+            notify(400, 'Please select a faculty');
+            return;
+        }
+
+        try {
+            const payload = {
+                teacherId: faculty,
+                theorySubjects: assignedTheory,
+                practicalSubjects: assignedPracticals,
+            };
+
+            const response = await postRequest('/api/teacher/assign-subjects', payload);
+
+            console.log(response)
+            if (response.status === 200) {
+
+                notify(response.status, 'Subjects assigned successfully!');
+
+                // Optionally reset states here
+                setSelectedSubjects({});
+                setSelectedPracticals({});
+                setFaculty('');
+
+            } else {
+                notify(response.status, response.message);
+            }
+        } catch (error) {
+            console.error('Error submitting:', error);
+            notify(response.status, response.message);
+        }
     }
+
 
     useEffect(() => {
         if (!department) return
@@ -98,6 +129,8 @@ const AssignSubjects = () => {
 
     return (
         <div className="p-6">
+
+            <ToastContainer />
             <h2 className="text-2xl font-semibold mb-6">Assign Subjects to Faculty</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -119,7 +152,7 @@ const AssignSubjects = () => {
                     year="SE Practicals"
                     handlePracticalChange={handlePracticalChange}
                     practicals={SE_practicals}
-                    selectedSubjects={selectedSubjects}
+                    selectedSubjects={selectedPracticals}
                 />
             </div>
 

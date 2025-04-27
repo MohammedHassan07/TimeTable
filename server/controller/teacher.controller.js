@@ -88,9 +88,35 @@ const viewTeachersByDepartment = async (req, res) => {
     }
 }
 
+const assignSubjects = async (req, res) => {
+
+    const { teacherId, theorySubjects, practicalSubjects } = req.body;
+
+    try {
+
+        const teacher = await Teacher.findById(teacherId);
+
+        if (!teacher) {
+            return res.status(404).json({ success: false, message: 'Teacher not found' });
+        }
+
+        // Update the teacher document
+        teacher.Theory = theorySubjects;       // Array of TheorySubject IDs
+        teacher.practical = practicalSubjects; // Array of Practical IDs
+
+        await teacher.save();
+
+        res.status(200).json({ message: 'Subjects assigned successfully' });
+    } catch (error) {
+        console.error('Error assigning subjects:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+}
+
 module.exports = {
 
     createTeacherProfile,
     viewTeachers,
-    viewTeachersByDepartment
+    viewTeachersByDepartment,
+    assignSubjects
 }

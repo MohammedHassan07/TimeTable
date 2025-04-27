@@ -25,4 +25,5 @@ subjectRoutes.get('/view-subjects-by-department/:department',
     viewSubjectByDepartment
 )
 
+
 module.exports = subjectRoutes

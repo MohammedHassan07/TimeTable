@@ -1,4 +1,4 @@
-const { createTeacherProfile, viewTeachers, viewTeachersByDepartment } = require('../controller/teacher.controller')
+const { createTeacherProfile, viewTeachers, viewTeachersByDepartment, assignSubjects } = require('../controller/teacher.controller')
 const isEmpty = require('../middleware/isEmpty')
 const isUnique = require('../middleware/isUnique')
 const express = require('express')
@@ -26,4 +26,5 @@ userRoute.get('/view-teacher-by-department/:department',
     viewTeachersByDepartment
 )
 
+userRoute.post('/assign-subjects', verify_jwt_token, assignSubjects)
 module.exports = userRoute
