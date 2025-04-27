@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Plus, View } from "lucide-react";
 import postRequest from "../services/postRequest";
 import getRequest from "../services/getRequest";
+import notify from '../utils/Toast'
+import { ToastContainer } from 'react-toastify';
 
 
 const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -37,7 +39,7 @@ const Teachers = () => {
     const response = await getRequest(`/api/teacher/view-teacher-by-department/${filter}`)
 
     setTeachers(response.teachers)
-      // console.log(response)
+    // console.log(response)
   }
 
   const handleCheckboxChange = (day) => {
@@ -81,9 +83,10 @@ const Teachers = () => {
     setTeachers([...teachers, newTeacher]);
     setFormData({ name: "", email: "", department: "", programType: "Degree", freeSlots: {} });
 
-    console.log("Sending Data:", newTeacher);
+    // console.log("Sending Data:", newTeacher);
     const response = await postRequest("/api/teacher/add-teacher", newTeacher);
-    console.log(response);
+    // console.log(response);
+    notify(response.status, response.message)
   };
 
   useEffect(() => {
@@ -94,6 +97,7 @@ const Teachers = () => {
 
   return (
     <div className="p-2 flex flex-col justify-center items-center w-full">
+      <ToastContainer />
       <div className="flex justify-between items-center mb-8 border-b-2 border-gray-800 w-full">
         <h1 className="text-2xl font-semibold text-gray-900">Teachers</h1>
         <div className="flex gap-4 p-2">

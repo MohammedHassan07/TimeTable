@@ -22,10 +22,9 @@ export default function Subjects() {
 
         const response = await getRequest(`/api/subject/view-subjects-by-department/${filter}`)
 
-        // SE_subjects, SE_practicals, TE_subjects, TE_practicals, BE_subjects, BE_practicals
         console.log(response)
-        setPracticals([response.SE_practicals, ...response.TE_practicals, response.BE_practicals])
-        setSubjects([...response.SE_subjects, ...response.TE_subjects, response.BE_subjects])
+        setPracticals([...response.SE_practicals, ...response.TE_practicals, ...response.BE_practicals])
+        setSubjects([...response.SE_subjects, ...response.TE_subjects, ...response.BE_subjects])
     }
 
     const addPractical = () => {
@@ -112,16 +111,8 @@ export default function Subjects() {
 
     useEffect(() => {
 
-        if (view === "list") {
+        if (view !== "list") {
 
-            const loadSubjectsData = async () => {
-                const response = await getRequest('/api/subject/view-subjects');
-                setSubjects(response.theory);
-                setPracticals(response.practicals);
-                // console.log(response);
-            };
-            loadSubjectsData();
-        } else {
             setProgram('');
             setDepartment('');
             setYear('');
