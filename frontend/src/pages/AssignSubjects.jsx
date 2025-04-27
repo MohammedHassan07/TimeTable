@@ -45,7 +45,10 @@ const AssignSubjects = () => {
         const assignedTheory = Object.keys(selectedSubjects).filter(key => selectedSubjects[key]);
         const assignedPracticals = Object.keys(selectedPracticals).filter(key => selectedPracticals[key]);
 
-        if (!faculty) {
+        if (!department) {
+            notify(400, 'Please select a departmen');
+            return
+        } else if (!faculty) {
             notify(400, 'Please select a faculty');
             return;
         }
@@ -60,13 +63,14 @@ const AssignSubjects = () => {
             const response = await postRequest('/api/teacher/assign-subjects', payload);
 
             console.log(response)
-            if (response.status === 200) {
+            if (Number(response.status) === 200) {
 
-                notify(response.status, 'Subjects assigned successfully!');
+                notify(Number(response.status), 'Subjects assigned successfully!');
 
                 // Optionally reset states here
                 setSelectedSubjects({});
                 setSelectedPracticals({});
+                setDepartment('')
                 setFaculty('');
 
             } else {

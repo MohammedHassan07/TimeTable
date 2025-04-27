@@ -64,7 +64,7 @@ const viewTeachersByDepartment = async (req, res) => {
 
         const department = req.params.department
 
-        console.log('view teacher by department', department)
+        // console.log('view teacher by department', department)
 
         let teachers;
         if (department === 'All') {
@@ -75,6 +75,7 @@ const viewTeachersByDepartment = async (req, res) => {
             teachers = await Teacher.find({ department })
         }
 
+        // console.log(teachers)
         res.status(200).json({ teachers })
 
 
@@ -92,6 +93,8 @@ const assignSubjects = async (req, res) => {
 
     const { teacherId, theorySubjects, practicalSubjects } = req.body;
 
+    // console.log(req.body)
+
     try {
 
         const teacher = await Teacher.findById(teacherId);
@@ -100,13 +103,12 @@ const assignSubjects = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Teacher not found' });
         }
 
-        // Update the teacher document
         teacher.Theory = theorySubjects;       // Array of TheorySubject IDs
         teacher.practical = practicalSubjects; // Array of Practical IDs
 
         await teacher.save();
 
-        res.status(200).json({ message: 'Subjects assigned successfully' });
+        res.status(200).json({ status: 200, message: 'Subjects assigned successfully' });
     } catch (error) {
         console.error('Error assigning subjects:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });

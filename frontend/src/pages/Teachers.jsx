@@ -28,7 +28,7 @@ const Teachers = () => {
     const response = await getRequest('/api/teacher/view-teacher')
 
     setTeachers(response.teachers)
-    // console.log(response)
+    console.log(response)
   }
 
   const handleDepartmentFilterChange = async (e) => {
@@ -39,7 +39,7 @@ const Teachers = () => {
     const response = await getRequest(`/api/teacher/view-teacher-by-department/${filter}`)
 
     setTeachers(response.teachers)
-    // console.log(response)
+    console.log(response)
   }
 
   const handleCheckboxChange = (day) => {
@@ -89,11 +89,11 @@ const Teachers = () => {
     notify(response.status, response.message)
   };
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    loadTeachersData()
+  //   loadTeachersData()
 
-  }, [])
+  // }, [])
 
   return (
     <div className="p-2 flex flex-col justify-center items-center w-full">
@@ -187,6 +187,7 @@ const Teachers = () => {
                       <p className="text-sm text-gray-500">{teacher.email}</p>
                       <p className="text-sm text-gray-500">{teacher.department}</p>
                       <p className="text-sm text-gray-500">Schedule: {teacher.freeSlots.map(({ day, slotNumber }) => `${day} (Slot ${slotNumber})`).join(", ")}</p>
+                      {/* <p className="text-sm text-gray-500">Subjects: {teacher.practical.map(({ day, slotNumber }) => `${day} (Slot ${slotNumber})`).join(", ")}</p> */}
                     </div>
                   </div>
                 ))}

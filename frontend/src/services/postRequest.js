@@ -13,7 +13,7 @@ export default async function postRequest(endPoint, data) {
     })
 
     const response = await res.json()
-    // console.log(response)
+    console.log(response)
 
     return response
 }
