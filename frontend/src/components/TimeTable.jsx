@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Plus, View } from "lucide-react";
 import { ToastContainer } from 'react-toastify';
 import postRequest from "../services/postRequest";
+import notify from '../utils/Toast'
 
 const initialTimetable = [{
     timeSlots: [
@@ -96,7 +97,7 @@ const Timetable = () => {
 
         // Convert freeSlots object into an array of { day, slotNumber }
 
-        const newTeacher = {
+        const timeTable = {
             department: formData.department,
             year: formData.year
         };
@@ -105,7 +106,7 @@ const Timetable = () => {
         setFormData({ department: "", year: "" });
 
         // console.log("Sending Data:", newTeacher);
-        const response = await postRequest("/api/teacher/add-teacher", newTeacher);
+        const response = await postRequest("/api/timetable/generate", timeTable);
         // console.log(response);
         notify(response.status, response.message)
     };

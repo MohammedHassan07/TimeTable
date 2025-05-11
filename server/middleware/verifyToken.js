@@ -51,7 +51,7 @@ const adminMiddleware = async (req, res, next) => {
 
         // console.log(user)
 
-        if (user.role !== 'Admin') return res.status(403).json({ message: 'Access denied, admin only' })
+        // if (user.role !== 'Admin') return res.status(403).json({ message: 'Access denied, admin only' })
         next()
 
     } catch (error) {

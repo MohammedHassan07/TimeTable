@@ -1,6 +1,7 @@
 const teacherModel = require('../models/Teacher.model')
 const timetableModel = require('../models/Timetable.model')
 const userModel = require('../models/user.model')
+const {TheorySubjects} = require('../models/subjects.model')
 
 /* Generate time table 
 POST /api/timetable/generate
@@ -29,7 +30,7 @@ const generateTimetable = async (req, res) => {
         let schedule = [];
 
         // 1. Fetch subjects for given branch and year
-        const subjects = await subjectModel.find({ department: branch, year }).lean();
+        const subjects = await TheorySubjects.find({ department: branch, year }).lean();
 
         // 2. Fetch all teachers who belong to the branch
         const teacherIds = subjects.map(s => s.teacherId);
@@ -122,7 +123,7 @@ const generateTimetable = async (req, res) => {
         }
 
         const timetable = new timetableModel({ branch, year, schedule });
-        await timetable.save();
+        // await timetable.save();
 
         res.status(201).json({ message: 'Timetable generated successfully', timetable });
 
