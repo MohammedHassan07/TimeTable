@@ -96,7 +96,7 @@ const Teachers = () => {
   // }, [])
 
   return (
-    <div className="p-2 flex flex-col justify-center items-center w-full">
+    <div className="p-2 flex flex-col justify-center items-start w-full overflow-y-scroll">
       <ToastContainer />
       <div className="flex justify-between items-center mb-8 border-b-2 border-gray-800 w-full">
         <h1 className="text-2xl font-semibold text-gray-900">Teachers</h1>

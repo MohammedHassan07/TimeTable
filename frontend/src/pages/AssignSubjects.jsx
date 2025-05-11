@@ -10,6 +10,7 @@ import postRequest from '../services/postRequest'
 const departments = ['Computer', 'Mechanical', 'ENTC', 'Civil', 'Electrical']
 
 const AssignSubjects = () => {
+    
     const [SE_subjects, setSE_subjects] = useState([])
     const [TE_subjects, setTE_subjects] = useState([])
     const [BE_subjects, setBE_subjects] = useState([])

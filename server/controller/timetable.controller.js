@@ -16,33 +16,50 @@ Content-Type: application/json
   ]
 }
 */
+// FINAL SERVER-SIDE TIMETABLE GENERATION CODE
+
 const generateTimetable = async (req, res) => {
     try {
-        const { branch, year, subjects } = req.body; // subjects = [{ subject, teacherId }]
-        console.log(req.body);
+        const { branch, year } = req.body;
 
         const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const slotsPerDay = 6;
-        const breakTime = { day: 'Thursday', slotNumber: 3 }; // Break on Thursday slot 3
+        const breakTime = { day: 'Friday', slotNumber: 5 };
 
         let schedule = [];
 
-        // Fetch teachers and group them by subjects they can teach
-        let teachers = await userModel.find({ department: branch }).lean();
-        let teacherMap = {}; // Map subject -> list of available teachers
+        // 1. Fetch subjects for given branch and year
+        const subjects = await subjectModel.find({ department: branch, year }).lean();
+
+        // 2. Fetch all teachers who belong to the branch
+        const teacherIds = subjects.map(s => s.teacherId);
+        const teachers = await userModel.find({ _id: { $in: teacherIds } }).lean();
+
+        // 3. Map teacherId to teacher details
+        const teacherMap = {};
         teachers.forEach(teacher => {
-            if (!teacherMap[teacher.subject]) {
-                teacherMap[teacher.subject] = [];
-            }
-            teacherMap[teacher.subject].push(teacher._id);
+            teacherMap[teacher._id] = teacher;
         });
 
-        let assignedSlots = {}; // Track assigned slots for each teacher
+        // 4. Initialize subject lecture counters
+        const subjectSlotCounter = {};
+        subjects.forEach(subject => {
+            subjectSlotCounter[subject._id.toString()] = {
+                remaining: subject.type === 'Practical' ? 2 : 3, // default assumption
+                type: subject.type,
+                teacherId: subject.teacherId
+            };
+        });
 
-        // Assign subjects to slots for each day
+        // 5. Helper to check if teacher is free
+        const isTeacherFree = (teacher, day, slot) => {
+            return teacher.freeSlots.some(s => s.day === day && s.slotNumber === slot);
+        };
+
+        const assignedSlots = {}; // Track teacher assignments
+
         for (let day of days) {
-            let daySchedule = { day, slots: [] };
-            let availableSubjects = [...subjects];
+            const daySchedule = { day, slots: [] };
 
             for (let slotNumber = 1; slotNumber <= slotsPerDay; slotNumber++) {
                 if (day === breakTime.day && slotNumber === breakTime.slotNumber) {
@@ -50,52 +67,71 @@ const generateTimetable = async (req, res) => {
                     continue;
                 }
 
-                if (availableSubjects.length === 0) break; // No more subjects to assign
+                let scheduled = false;
 
-                let randomIndex = Math.floor(Math.random() * availableSubjects.length);
-                let { subject } = availableSubjects[randomIndex];
+                for (let subject of subjects) {
+                    const subjectId = subject._id.toString();
+                    const teacher = teacherMap[subject.teacherId];
+                    if (!teacher || subjectSlotCounter[subjectId].remaining <= 0) continue;
 
-                // Get available teachers for the subject
-                let availableTeachers = teacherMap[subject] || [];
+                    if (subject.type === 'Practical') {
+                        // Practical requires 2 continuous slots
+                        if (slotNumber >= slotsPerDay) continue;
+                        if (
+                            isTeacherFree(teacher, day, slotNumber) &&
+                            isTeacherFree(teacher, day, slotNumber + 1) &&
+                            !(assignedSlots[teacher._id]?.some(s => s.day === day && (s.slot === slotNumber || s.slot === slotNumber + 1)))
+                        ) {
+                            // Assign both slots
+                            daySchedule.slots.push({ slotNumber, subject: subject.name, teacher: teacher.name });
+                            daySchedule.slots.push({ slotNumber: slotNumber + 1, subject: subject.name, teacher: teacher.name });
 
-                if (availableTeachers.length === 0) {
-                    console.log(`No teacher available for subject: ${subject}`);
-                    continue; // Skip if no teacher is available
+                            assignedSlots[teacher._id] = assignedSlots[teacher._id] || [];
+                            assignedSlots[teacher._id].push({ day, slot: slotNumber });
+                            assignedSlots[teacher._id].push({ day, slot: slotNumber + 1 });
+
+                            subjectSlotCounter[subjectId].remaining = 0;
+                            slotNumber++; // Skip next slot
+                            scheduled = true;
+                            break;
+                        }
+                    } else {
+                        // Theory
+                        if (
+                            isTeacherFree(teacher, day, slotNumber) &&
+                            !(assignedSlots[teacher._id]?.some(s => s.day === day && s.slot === slotNumber))
+                        ) {
+                            daySchedule.slots.push({ slotNumber, subject: subject.name, teacher: teacher.name });
+
+                            assignedSlots[teacher._id] = assignedSlots[teacher._id] || [];
+                            assignedSlots[teacher._id].push({ day, slot: slotNumber });
+
+                            subjectSlotCounter[subjectId].remaining--;
+                            scheduled = true;
+                            break;
+                        }
+                    }
                 }
 
-                // Pick a random teacher for the subject
-                let teacherId = availableTeachers[Math.floor(Math.random() * availableTeachers.length)];
-
-                // Ensure no conflicts
-                if (!assignedSlots[teacherId]) assignedSlots[teacherId] = [];
-                if (assignedSlots[teacherId].some(s => s.day === day && s.slotNumber === slotNumber)) {
-                    continue; // Skip if teacher is already assigned this slot
+                if (!scheduled) {
+                    daySchedule.slots.push({ slotNumber, subject: 'Free', teacher: null });
                 }
-
-                // Assign lecture
-                daySchedule.slots.push({ slotNumber, subject, teacher: teacherId });
-                assignedSlots[teacherId].push({ day, slotNumber });
-
-                // Remove subject to prevent overuse
-                availableSubjects.splice(randomIndex, 1);
             }
 
             schedule.push(daySchedule);
         }
 
-        // Save to DB
         const timetable = new timetableModel({ branch, year, schedule });
-
-        console.log('Generated Timetable:', timetable);
         await timetable.save();
 
         res.status(201).json({ message: 'Timetable generated successfully', timetable });
 
     } catch (error) {
+        console.error('Error generating timetable:', error);
         res.status(500).json({ message: 'Server error', error: error.message });
-        console.log('Error generating timetable:', error);
     }
 };
+
 
 
 /*

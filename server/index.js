@@ -25,5 +25,5 @@ app.use('/auth', userRoute)
 app.use('/subject', subjectRoutes)
 app.use('/teacher', teacherRoutes)
 
-// app.use('/timetable', timetableRoutes)
+app.use('/timetable', timetableRoutes)
 app.use('/chart', chart)

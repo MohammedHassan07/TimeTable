@@ -108,7 +108,7 @@ const Dashboard = () => {
         <Aside />
 
         {/* content */}
-        <div className="w-[85vw] bg-gray-100 min-h-screen overflow-y-auto">
+        <div className="w-[85vw] bg-gray-100 min-h-screen overflow-y-scroll">
           <Outlet />
         </div>
         
