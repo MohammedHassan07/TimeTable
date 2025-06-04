@@ -79,36 +79,22 @@ const Timetable = () => {
     const [view, setView] = useState("list");
     const [departmentFilter, setDepartmentFilter] = useState('')
     const [timetable, setTimetable] = useState(initialTimetable);
-    const [formData, setFormData] = useState({ department: "", year: "" });
-
-    const handleDepartmentFilterChange = async (e) => {
-
-        const filter = e.target.value
-        setDepartmentFilter(filter)
-
-        const response = await getRequest(`/api/timetable/generate`)
-
-        // setTeachers(response.teachers)
-        console.log(response)
-    }
+    const [formData, setFormData] = useState({ department: "", year: "", semester: "" });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Convert freeSlots object into an array of { day, slotNumber }
 
-        const timeTable = {
-            department: formData.department,
-            year: formData.year
-        };
 
         // setTeachers([...teachers, newTeacher]);
-        setFormData({ department: "", year: "" });
+        setFormData({ department: "", year: "", semester: "" });
 
-        // console.log("Sending Data:", newTeacher);
-        const response = await postRequest("/api/timetable/generate", timeTable);
-        // console.log(response);
-        notify(response.status, response.message)
+        // console.log("Sending semester:", formData);
+
+        const response = await postRequest("/api/timetable/generate", formData);
+        console.log(response);
+
+        // notify(response.status, response.message)
     };
 
 
@@ -120,7 +106,7 @@ const Timetable = () => {
             <div className="p-2 flex flex-col justify-center items-start w-full overflow-y-scroll">
                 <ToastContainer />
                 <div className="flex justify-between items-center mb-8 border-b-2 border-gray-800 w-full">
-                    <h1 className="text-2xl font-semibold text-gray-900">Teachers</h1>
+                    <h1 className="text-2xl font-semibold text-gray-900">Time Table</h1>
                     <div className="flex gap-4 p-2">
                         <button onClick={() => setView("list")} className={`hover:cursor-pointer flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 ${view === "list" ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
                             <View className="w-4 h-4" /> View
@@ -153,12 +139,24 @@ const Timetable = () => {
                         <div className='w-full'>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Year</label>
 
-                            <select  value={formData.year} onChange={(e) => setFormData({ ...formData, year: e.target.value })} 
-                            className="w-full p-2 border border-gray-300 rounded-lg" required>
+                            <select value={formData.year} onChange={(e) => setFormData({ ...formData, year: e.target.value })}
+                                className="w-full p-2 border border-gray-300 rounded-lg" required>
                                 <option value="">Select a Year</option>
                                 <option value="SE">SE</option>
                                 <option value="TE">TE</option>
                                 <option value="BE">BE</option>
+                            </select>
+                        </div>
+
+                        <div className="w-full">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Semester</label>
+                            <select
+                                value={formData.semester}
+                                onChange={(e) => { setFormData({ ...formData, semester: e.target.value }) }}
+                                className="w-full p-2 border border-gray-300 rounded-lg" required>
+
+                                <option value="1">1st Sem</option>
+                                <option value="2">2nd Sem</option>
                             </select>
                         </div>
                     </div>
@@ -170,17 +168,35 @@ const Timetable = () => {
             ) : (
                 <>
                     {/* search */}
-                    <div className="w-full">
-                        <select value={departmentFilter} onChange={(e) => handleDepartmentFilterChange(e)} className="w-full p-2 border border-gray-300 rounded-lg" required>
-                            <option value="All">Select a department</option>
-                            <option value="Civil">Civil</option>
-                            <option value="Computer">Computer</option>
-                            <option value="Electrical">Electrical</option>
-                            <option value="ENTC">ENTC</option>
-                            <option value="Mechanical">Mechanical</option>
-                        </select>
-                    </div>
 
+                    <div className='flex w-full justify-center items-center gap-2'>
+
+                        <div className="w-full">
+                            <select value={departmentFilter} onChange={(e) => { setDepartmentFilter(e.target.value) }} className="w-full p-2 border border-gray-300 rounded-lg" required>
+                                <option value="All">Select a department</option>
+                                <option value="Civil">Civil</option>
+                                <option value="Computer">Computer</option>
+                                <option value="Electrical">Electrical</option>
+                                <option value="ENTC">ENTC</option>
+                                <option value="Mechanical">Mechanical</option>
+                            </select>
+                        </div>
+                        {/* <div className="w-full">
+                            <select value={semester} onChange={(e) => { setSemester(e.target.value) }} className="w-full p-2 border border-gray-300 rounded-lg" required>
+                                <option value="1">1st Sem</option>
+                                <option value="2">2nd Sem</option>
+                            </select>
+                        </div> */}
+
+                        <div>
+                            <button
+                                // onClick={handleSubmit}
+                                className='bg-green-700 text-white p-1 border rounded-lg cursor-pointer hover:bg-green-900'>
+                                Generate
+                            </button>
+                        </div>
+
+                    </div>
 
                     <div className="w-full max-w-6xl mx-auto mt-8 bg-white shadow-lg rounded-lg overflow-x-auto">
 

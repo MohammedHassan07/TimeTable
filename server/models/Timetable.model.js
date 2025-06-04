@@ -6,6 +6,8 @@ const timetableSchema = new Schema({
 
     year: { type: String, enum: ['First Year', 'Second Year', 'Third Year', 'Final Year'], required: true },
 
+    semester: {type: Number},
+
     schedule: [
         {
 

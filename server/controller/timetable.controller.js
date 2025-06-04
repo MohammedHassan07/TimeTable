@@ -21,7 +21,7 @@ Content-Type: application/json
 
 const generateTimetable = async (req, res) => {
     try {
-        const { branch, year } = req.body;
+        const { department, semester, year } = req.body;
 
         const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const slotsPerDay = 6;
@@ -30,7 +30,7 @@ const generateTimetable = async (req, res) => {
         let schedule = [];
 
         // 1. Fetch subjects for given branch and year
-        const subjects = await TheorySubjects.find({ department: branch, year }).lean();
+        const subjects = await TheorySubjects.find({ department, semester, year }).lean();
 
         // 2. Fetch all teachers who belong to the branch
         const teacherIds = subjects.map(s => s.teacherId);
@@ -122,7 +122,7 @@ const generateTimetable = async (req, res) => {
             schedule.push(daySchedule);
         }
 
-        const timetable = new timetableModel({ branch, year, schedule });
+        const timetable = new timetableModel({ department, year, semester, schedule });
         // await timetable.save();
 
         res.status(201).json({ message: 'Timetable generated successfully', timetable });
