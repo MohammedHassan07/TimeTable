@@ -92,8 +92,10 @@ const Timetable = () => {
         // console.log("Sending semester:", formData);
 
         const response = await postRequest("/api/timetable/generate", formData);
-        console.log(response);
 
+
+        console.log(response);
+       
         // notify(response.status, response.message)
     };
 
@@ -149,7 +151,7 @@ const Timetable = () => {
                         </div>
 
                         <div className="w-full">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Semester</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Semester</label>
                             <select
                                 value={formData.semester}
                                 onChange={(e) => { setFormData({ ...formData, semester: e.target.value }) }}

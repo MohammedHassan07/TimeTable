@@ -2,22 +2,7 @@ const teacherModel = require('../models/Teacher.model')
 const timetableModel = require('../models/Timetable.model')
 const userModel = require('../models/user.model')
 const {TheorySubjects} = require('../models/subjects.model')
-
-/* Generate time table 
-POST /api/timetable/generate
-Authorization: Bearer your_token_here
-Content-Type: application/json
-
-{
-  "branch": "Computer",
-  "year": "First Year",
-  "subjects": [
-    { "subject": "Math", "teacherId": "65b78a9f1234567890abcdef" },
-    { "subject": "Physics", "teacherId": "65b78a9f9876543210fedcba" }
-  ]
-}
-*/
-// FINAL SERVER-SIDE TIMETABLE GENERATION CODE
+const fs = require('fs')
 
 const generateTimetable = async (req, res) => {
     try {
@@ -35,6 +20,9 @@ const generateTimetable = async (req, res) => {
         // 2. Fetch all teachers who belong to the branch
         const teacherIds = subjects.map(s => s.teacherId);
         const teachers = await userModel.find({ _id: { $in: teacherIds } }).lean();
+
+        console.log('generate teachers -->', teachers)
+        console.log('generate -->', subjects)
 
         // 3. Map teacherId to teacher details
         const teacherMap = {};
@@ -124,6 +112,11 @@ const generateTimetable = async (req, res) => {
 
         const timetable = new timetableModel({ department, year, semester, schedule });
         // await timetable.save();
+
+        // fs.writeFile('./temp.json', JSON.stringify(timetable, null, 2), (err) => {
+        //     if (err)
+        //         console.log(err)
+        // })
 
         res.status(201).json({ message: 'Timetable generated successfully', timetable });
 
